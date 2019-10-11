@@ -1,10 +1,9 @@
 #include <iostream>
-#include "./Screen.h"
-#include "./Graph.h"
+#include "./Screen.hpp"
+#include "./Graph.hpp"
 using namespace std;
 
 int main()
 {
-  
   return 0;
 }
