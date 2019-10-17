@@ -39,8 +39,8 @@ public:
     auto y_2 = nodo_2->y;
     float peso = calc_distan(x_1,x_2,y_1,y_2);
     Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
-    nodo_1->links->push_back(nuevolink);
-    nodo_2->links->push_back(nuevolink);
+    nodo_1->links->push(nuevolink);
+    nodo_2->links->push(nuevolink);
   }
   void rm_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2){
     
