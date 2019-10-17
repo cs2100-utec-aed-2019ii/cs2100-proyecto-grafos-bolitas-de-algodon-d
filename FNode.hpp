@@ -14,4 +14,17 @@ struct Node
   }
 };
 
+template<typename T>
+struct Node<T*>
+{
+  T value;
+  Node<T> *next;
+  Node() : next(nullptr){}
+  ~Node()
+  {
+    if(next){delete next;next = nullptr;}
+    delete value;
+  }
+};
+
 #endif
