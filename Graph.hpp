@@ -6,6 +6,8 @@
 #include "./Link.hpp"
 #include "./Macros.hpp"
 
+template<typename T>
+class Screen;
 
 template <typename T>
 class graph
@@ -19,12 +21,9 @@ public:
 
   }
   
-  graph(string nombre_archivo){
-
-  }
-
   virtual ~graph (){
     delete nodos;
+    delete links;
   }
 
   void insert_nodo(Vertex<T>* nodo,List<Link<T>>aristas){
@@ -83,19 +82,20 @@ public:
 
   }
 
-
   //auxiliares
-    float calc_distan(float x1,float x2,float y1,float y2){
-      return sqrt( pow((x2-x1),2) + pow((y2-y1),2));
-    }
+  float calc_distan(float x1,float x2,float y1,float y2){
+    return sqrt( pow((x2-x1),2) + pow((y2-y1),2));
+  }
+  
+  bool exist(T dato){
 
-    
-    bool exist(T dato){
+  }
 
-    }
-    void save(){
+  void save(){
 
-    }
+  }
+
+  friend class Screen<T>;
 };
 
 #endif

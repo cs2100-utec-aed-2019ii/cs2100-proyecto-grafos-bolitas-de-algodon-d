@@ -57,6 +57,33 @@ public:
     delete temp->next;
     temp->next = nullptr;
   }
+  void pop(T value)
+  {
+    if(!head){return;}
+    size--;
+    if(!(head->next))
+    {
+      if(head->value == value)
+      {
+        delete head;
+        head = nullptr;
+      }
+      return;
+    }
+    Node<T> *temp = head;
+    Node<T> *temp2;
+    while(temp->next->next)
+    {
+      if(temp->next->value == value)
+      {
+        temp2 = temp->next;
+        temp->next = temp->next->next;
+        delete temp2;
+        return;
+      }
+      temp = temp->next;
+    }
+  }
   void for_each(void (*exec)(T))
   {
     if(!head){return;}
