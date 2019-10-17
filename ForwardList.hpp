@@ -72,7 +72,7 @@ public:
     }
     Node<T> *temp = head;
     Node<T> *temp2;
-    while(temp->next->next)
+    while(temp->next)
     {
       if(temp->next->value == value)
       {
