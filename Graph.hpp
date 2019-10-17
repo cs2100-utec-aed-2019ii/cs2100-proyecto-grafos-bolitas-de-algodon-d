@@ -26,7 +26,7 @@ public:
     delete links;
   }
 
-  void insert_nodo(Vertex<T>* nodo,List<Link<T>>aristas){
+  void insert_nodo(Vertex<T>* nodo){
     Vertex<T>* nuevo = new Vertex<T>(nodo->dato,nodo->x,nodo->y);
     nodos.push(nuevo);
   }
