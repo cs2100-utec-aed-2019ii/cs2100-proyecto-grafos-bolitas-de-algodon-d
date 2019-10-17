@@ -22,7 +22,7 @@ public:
     }
     return temp->value;
   }
-  void push_back(T value)
+  void push(T value)
   {
     size++;
     if(head)
@@ -39,7 +39,7 @@ public:
     head = new Node<T>;
     head->value = value;
   }
-  void pop_back()
+  void pop()
   {
     if(!head){return;}
     size--;

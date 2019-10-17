@@ -12,9 +12,16 @@ private:
   string filename;
   graph<T> *element;
 public:
-  Parser(graph<T> *_element, string filename)
+  Parser(graph<T> *_element, string _filename)
   {
-
+    element = _element;
+    filename = _filename;
+    file = new ifstream(filename);
+  }
+  ~Parser()
+  {
+    file->close();
+    delete file;
   }
 };
 
