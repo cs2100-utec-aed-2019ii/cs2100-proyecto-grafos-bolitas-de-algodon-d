@@ -14,7 +14,7 @@ run: compile
 	@./$(output)
 
 compile:
-	$(compiler) -o $(output) main.cpp $(FLAGS)
+	@$(compiler) -o $(output) main.cpp $(FLAGS)
 
 clear:
 	@rm ./$(output)
