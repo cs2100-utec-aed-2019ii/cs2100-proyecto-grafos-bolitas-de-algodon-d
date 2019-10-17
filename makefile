@@ -1,8 +1,18 @@
+compiler = clang++
+FLAGS = -pthreads $(flags)
+output = project.o
+
+ifeq ($(shell uname -s), Darwin)
+    flags = -framework OpenGL -framework GLUT
+else
+    flags = -lGL -lGLU -lglut
+endif
+
 run: compile
-	@./project.o
+	@./$(output)
 
 compile:
-	@clang++ -o project.o main.cpp -pthreads -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
+	@$(compiler) -o $(output) main.cpp $(FLAGS)
 
 clear:
-	@rm ./project.o
+	@rm ./$(output)
