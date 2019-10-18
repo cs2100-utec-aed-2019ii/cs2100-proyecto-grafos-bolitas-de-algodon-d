@@ -37,7 +37,7 @@ public:
       return;
     }
     head = new Node<T>;
-    head->set_valor(value); //andre cambie esto
+    head->value = value;
   }
   void pop()
   {
