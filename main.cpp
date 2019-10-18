@@ -12,7 +12,7 @@ int main()
   grafo->insert_nodo(segundo);
   grafo->make_link(primero,segundo);
   cout<<primero->dato<<endl;
-  cout<<primero->links.get_head()->value.llegada->dato;
+  cout<<primero->links.get_head()->value->llegada->dato;
   delete grafo;
   return 0;
 }

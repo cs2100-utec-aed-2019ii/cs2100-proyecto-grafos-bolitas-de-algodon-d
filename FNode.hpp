@@ -21,8 +21,8 @@ struct Node
 template<typename T>
 struct Node<T*>
 {
-  T value;
-  Node<T> *next;
+  T* value;
+  Node<T*> *next;
   Node() : next(nullptr){}
   Node(T valor): value(valor),next(nullptr){}
   ~Node()
