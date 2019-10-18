@@ -94,6 +94,10 @@ public:
       temp = temp->next;
     }
   }
+  Node<T> * get_head(){
+    return head;
+  }
+  
 };
 
 #endif
