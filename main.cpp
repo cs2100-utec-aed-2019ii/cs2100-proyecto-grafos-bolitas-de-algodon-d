@@ -12,7 +12,11 @@ int main()
   grafo->insert_nodo(segundo);
   grafo->make_link(primero,segundo);
   cout<<primero->dato<<endl;
+<<<<<<< HEAD
   cout<<primero->links.get_head()->value->llegada->dato << endl;
   cout<<primero->links.get_head()->value->peso<<endl;
+=======
+  cout<<primero->links.at(0)->llegada->dato;
+>>>>>>> e00b49921bfdfc7684ef4cfd513570678dcd24e6
   return 0;
 }
