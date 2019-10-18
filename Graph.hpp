@@ -22,8 +22,8 @@ public:
   }
   
   virtual ~graph (){
-    delete nodos;
-    delete links;
+    //delete nodos;
+    //delete links;
   }
 
   void insert_nodo(Vertex<T>* nodo){

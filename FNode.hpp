@@ -7,7 +7,7 @@ struct Node
 {
   T value;
   Node<T> *next;
-  Node() : next(nullptr){}
+  Node() : next(nullptr){std::cout << "NO PUNTERO" << std::endl;}
   ~Node()
   {
     if(next){delete next;next = nullptr;}
@@ -17,9 +17,9 @@ struct Node
 template<typename T>
 struct Node<T*>
 {
-  T value;
+  T* value;
   Node<T> *next;
-  Node() : next(nullptr){}
+  Node() : next(nullptr){std::cout << "PUNTERO" << std::endl;}
   ~Node()
   {
     if(next){delete next;next = nullptr;}

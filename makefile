@@ -1,5 +1,5 @@
 compiler = clang++
-FLAGS = -D $(directive) -pthreads $(flags)
+FLAGS = -D $(directive) -pthread $(flags)
 output = project.o
 
 ifeq ($(shell uname -s), Darwin)
