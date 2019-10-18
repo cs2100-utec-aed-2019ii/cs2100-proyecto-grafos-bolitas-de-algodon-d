@@ -14,7 +14,7 @@ class graph
 {
 private:
   List<Vertex<T>*> nodos;
-  List<Link<T>*> links ;
+  List<Link<T>*> links;
 public:
   graph (){}
   graph (graph &grafo){
@@ -23,12 +23,17 @@ public:
   
   virtual ~graph (){
     delete nodos;
-    delete links;
+    
   }
 
-  void insert_nodo(Vertex<T>* nodo,List<Link<T>>aristas){
-    Vertex<T>* nuevo = new Vertex<T>(nodo->dato,nodo->x,nodo->y);
-    nodos.push(nuevo);
+  void insert_nodo(Vertex<T>* nodo){
+    if (exist(nodo->dato)) return;
+
+    else
+    {
+      Vertex<T>* nuevo = new Vertex<T>(nodo->dato,nodo->x,nodo->y);
+      nodos.push(nuevo);
+    }
   }
 
   void make_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2 ){
@@ -40,18 +45,18 @@ public:
     Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
     nodo_1->links->push(nuevolink);
     nodo_2->links->push(nuevolink);
+    links->push(nuevolink);
   }
+
   void rm_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2){
     
-    Link<T>* aux_delete = find_link(nodo_1,nodo_2); //creo que debemos implementar un find en la lista principal, mn
-    //el find link esta por implementarse recién
+    Link<T>* aux_delete = find_link(nodo_1,nodo_2); 
 
-    //para borrar de la lista de cada nodo tmbn debe ser util un find in lista :v
     delete aux_delete;
   }
 
   void rm_Vertex(Vertex<T>* nodo){
-
+    
   }
   bool is_connect (){
 
@@ -60,7 +65,7 @@ public:
 
   }
   float calc_density(){
-
+      return (2*links->size)/(nodos->size /nodos->size) ;
   }
   graph prim(Vertex<T>* inicial){
 
@@ -88,7 +93,7 @@ public:
   }
   
   bool exist(T dato){
-
+    nodos->for_each(nodos->head);
   }
 
   void save(){
