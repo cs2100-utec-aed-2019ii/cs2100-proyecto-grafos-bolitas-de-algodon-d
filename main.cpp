@@ -12,6 +12,6 @@ int main()
   grafo->insert_nodo(segundo);
   grafo->make_link(primero,segundo);
   cout<<primero->dato<<endl;
-  cout<<primero->links.get_head()->value->llegada->dato;
+  cout<<primero->links.at(0)->llegada->dato;
   return 0;
 }
