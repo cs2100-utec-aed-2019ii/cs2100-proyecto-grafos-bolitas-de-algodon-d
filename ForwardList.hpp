@@ -37,7 +37,7 @@ public:
       return;
     }
     head = new Node<T>;
-    head->value = value;
+    head->set_valor(value); //andre cambie esto
   }
   void pop()
   {
@@ -94,6 +94,10 @@ public:
       temp = temp->next;
     }
   }
+  Node<T> * get_head(){
+    return head;
+  }
+  
 };
 
 #endif

@@ -13,6 +13,8 @@ struct Link
   Vertex<T> *partida;
   Vertex<T> *llegada;
   Link(Vertex<T> *_partida, Vertex<T> *_llegada, float _peso = 1) : partida(_partida), llegada(_llegada), peso(_peso){}
+
+  ~Link(){}
 };
 
 #endif

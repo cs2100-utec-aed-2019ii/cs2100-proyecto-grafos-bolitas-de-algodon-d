@@ -22,12 +22,17 @@ public:
   }
   
   virtual ~graph (){
-    delete nodos;
+    //delete nodos;
     
   }
 
   void insert_nodo(Vertex<T>* nodo){
     Vertex<T>* nuevo = new Vertex<T>(nodo->dato,nodo->x,nodo->y);
+    nodos.push(nuevo);
+  }
+
+  void insert_nodo(T dato,float x,float y){
+    Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
     nodos.push(nuevo);
   }
 
@@ -38,9 +43,9 @@ public:
     auto y_2 = nodo_2->y;
     float peso = calc_distan(x_1,x_2,y_1,y_2);
     Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
-    nodo_1->links->push(nuevolink);
-    nodo_2->links->push(nuevolink);
-    links->push(nuevolink);
+    nodo_1->links.push(nuevolink);
+    nodo_2->links.push(nuevolink);
+    links.push(nuevolink); 
   }
 
   void rm_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2){
@@ -51,7 +56,7 @@ public:
   }
 
   void rm_Vertex(Vertex<T>* nodo){
-    Vertex<T>* temp;
+    Vertex<T>* temp = nullptr;
     nodos.for_each(
       [nodo, temp](Vertex<T> *i){
         if(i == nodo)
@@ -62,8 +67,9 @@ public:
     );
     nodos.pop(temp);
   }
-  bool is_connect (){
 
+  bool is_connect (){
+    
   }
   bool is_bipartited(){
 
@@ -74,6 +80,7 @@ public:
   
   graph prim(Vertex<T>* inicial){
       Vertex<T>* temp;
+      
       graph<T>* nuevografo = new graph<T>;
     nodos.for_each(
       [inicial, temp](Vertex<T> *i){
@@ -99,8 +106,27 @@ public:
     
   }
 
-  List <Vertex<T>*> get_neighbort(){
+  List <Vertex<T>*> get_neighbort(Vertex<T>* nodo){
+      Vertex<T>* temp = nullptr;
+      
+      nodos->for_each( 
+        [temp, nodo](Vertex<T> *i){
+        if(i == nodo)
+          {
+          temp = i;
+          }
+        }
+      );
 
+      List<Vertex<T>*> listaret = new List<Vertex<T>*>;
+      Vertex<T>* destiny = nullptr;
+      
+      temp->links->for_each( [destiny,listaret] (Link<T> *i){
+          destiny = i->llegada;    
+          listaret->push_back(destiny);
+        } 
+      );
+      return listaret;
   }
 
   //auxiliares
