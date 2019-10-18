@@ -12,6 +12,9 @@ struct Vertex
   T dato;
   List<Link<T>*> links;
   Vertex(T _dato, float _x, float _y) : dato(_dato), x(_x), y(_y){}
+  ~Vertex(){
+    delete links;
+  }
 };
 
 #endif

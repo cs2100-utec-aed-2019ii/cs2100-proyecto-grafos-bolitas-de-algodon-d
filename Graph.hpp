@@ -27,13 +27,8 @@ public:
   }
 
   void insert_nodo(Vertex<T>* nodo){
-    if (exist(nodo->dato)) return;
-
-    else
-    {
-      Vertex<T>* nuevo = new Vertex<T>(nodo->dato,nodo->x,nodo->y);
-      nodos.push(nuevo);
-    }
+    Vertex<T>* nuevo = new Vertex<T>(nodo->dato,nodo->x,nodo->y);
+    nodos.push(nuevo);
   }
 
   void make_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2 ){
@@ -56,7 +51,16 @@ public:
   }
 
   void rm_Vertex(Vertex<T>* nodo){
-    
+    Vertex<T>* temp;
+    nodos.for_each(
+      [nodo, temp](Vertex<T> *i){
+        if(i == nodo)
+        {
+          temp = i;
+        }
+      }
+    );
+    nodos.pop(temp);
   }
   bool is_connect (){
 
@@ -67,8 +71,20 @@ public:
   float calc_density(){
       return (2*links->size)/(nodos->size /nodos->size) ;
   }
+  
   graph prim(Vertex<T>* inicial){
+      Vertex<T>* temp;
+      graph<T>* nuevografo = new graph<T>;
+    nodos.for_each(
+      [inicial, temp](Vertex<T> *i){
+        if(i == inicial)
+        {
+          temp = i;
+        }
+      }
+    );
 
+  
   }
   graph kruskal(){
 
@@ -93,7 +109,7 @@ public:
   }
   
   bool exist(T dato){
-    nodos->for_each(nodos->head);
+    //nodos->for_each(nodos->head);
   }
 
   void save(){

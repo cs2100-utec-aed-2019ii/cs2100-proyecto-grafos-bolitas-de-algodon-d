@@ -1,11 +1,13 @@
 compiler = clang++
-FLAGS = -pthreads $(flags)
+FLAGS = -D $(directive) -pthreads $(flags)
 output = project.o
 
 ifeq ($(shell uname -s), Darwin)
     flags = -framework OpenGL -framework GLUT
+		directive = OSX
 else
     flags = -lGL -lGLU -lglut
+		directive = LINUX
 endif
 
 run: compile
