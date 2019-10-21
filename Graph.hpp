@@ -6,13 +6,19 @@
 #include "./Link.hpp"
 #include "./Macros.hpp"
 
+template<bool dir,typename T>
+struct graph_helper 
+{
+  
+};
+
 template<typename T>
 class Screen;
 
-template <typename T>
+template <bool dir = false, typename T = bool>
 class graph
 {
-private:
+public: //Nota mental, poner esto en privado
   List<Vertex<T>*> nodos;
   List<Link<T>*> links;
 public:
@@ -25,11 +31,11 @@ public:
   }
 
   void insert_nodo(Vertex<T>* nodo){
-    Vertex<T>* nuevo = new Vertex<T>(nodo->dato,nodo->x,nodo->y);
+    Vertex<T>* nuevo = new Vertex<T>(nodo->x,nodo->y);
     nodos.push(nuevo);
   }
 
-  void insert_nodo(T dato,float x,float y){
+  void insert_nodo(float x,float y,T dato = 1){
     Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
     nodos.push(nuevo);
   }
@@ -77,9 +83,8 @@ public:
   }
   
   graph prim(Vertex<T>* inicial){
-      Vertex<T>* temp;
-      
-      graph<T>* nuevografo = new graph<T>;
+    Vertex<T>* temp;
+    graph<dir,T>* nuevografo = new graph<dir,T>;
     nodos.for_each(
       [inicial, temp](Vertex<T> *i){
         if(i == inicial)
@@ -134,10 +139,6 @@ public:
   
   bool exist(T dato){
     //nodos->for_each(nodos->head);
-  }
-
-  void save(){
-
   }
 
   friend class Screen<T>;

@@ -7,20 +7,34 @@ template<typename T>
 struct Vertex
 {
   List<Vertex<T>*> nodes;
+  T data;
   float x;
   float y;
-  T dato;
   List<Link<T>*> links;
-  Vertex(T _dato, float _x, float _y) : dato(_dato), x(_x), y(_y){}
+  Vertex(float _x, float _y) : x(_x), y(_y){}
 
-  unsigned int grade_vertex(){
-    return this->links->size;
+  unsigned int grade(){
+    return this->links.length();
   }
+  ~Vertex(){}
+};
 
-  
+template<typename T>
+struct Vertex<T*>
+{
+  List<Vertex<T*>*> nodes;
+  T* data;
+  float x;
+  float y;
+  List<Link<T*>*> links;
+  Vertex(float _x, float _y) : x(_x), y(_y){}
 
-  ~Vertex(){
-    //delete links;
+  unsigned int grade(){
+    return this->links.length();
+  }
+  ~Vertex()
+  {
+    delete data;
   }
 };
 
