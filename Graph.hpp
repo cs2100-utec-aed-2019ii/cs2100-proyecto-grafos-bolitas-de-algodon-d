@@ -77,9 +77,8 @@ public:
   }
   
   graph prim(Vertex<T>* inicial){
-      Vertex<T>* temp;
-      
-      graph<T>* nuevografo = new graph<T>;
+    Vertex<T>* temp;
+    graph<T>* nuevografo = new graph<T>;
     nodos.for_each(
       [inicial, temp](Vertex<T> *i){
         if(i == inicial)
