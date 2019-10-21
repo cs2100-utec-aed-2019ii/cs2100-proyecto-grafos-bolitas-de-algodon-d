@@ -2,11 +2,30 @@
 #define LIST_H
 #include "./FNode.hpp"
 
+//template<typename T>
+//void swap(T &a, T &b)
+//{
+//  T temp = a;
+//  a = b;
+//  b = temp;
+//}
+
 template<typename T>
 class List {
 private:
   Node<T> *head;
   unsigned int size;
+  Node<T>* atn(unsigned int position)
+  {
+    if(!head){throw;}
+    Node<T> *temp = head;
+    for(int i = 0; i < position; i++)
+    {
+      if(!(temp->next)){throw;}
+      temp = temp->next;
+    }
+    return temp;
+  }
 public:
   List():head(nullptr), size(0){}
   ~List(){delete head; size = 0;}
@@ -93,6 +112,39 @@ public:
       exec(temp->value);
       temp = temp->next;
     }
+  }
+  void sort()
+  {
+    for (int step = size/2; step > 0; step /= 2) 
+    { 
+      for (int i = step; i < size; i += 1) 
+      { 
+        T temp = at(i); 
+        int j;             
+        for (j = i; j >= step && at(j - step) > temp; j -= step) 
+            atn(j)->value = at(j - step); 
+        atn(j)->value = temp; 
+      } 
+    }
+  }
+  int bsearch(int l, int r, T value)
+  {
+    if (r >= l) { 
+      int mid = l + (r - l) / 2; 
+      if (at(mid) == value) 
+          return mid; 
+  
+      if (at(mid) > value) 
+          return binarySearch(l, mid - 1, value); 
+  
+      return binarySearch(mid + 1, r, value); 
+    } 
+    return -1;
+  }
+  int index(T element)
+  {
+    sort();
+    return bsearch(0, size-1, element);
   }
 };
 

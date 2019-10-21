@@ -7,7 +7,8 @@ template<typename T>
 class Screen
 {
 private:
-  graph<T> *values;
+  graph<false,T> *values;
+  graph<true,T> *values2;
 public:
   
 };
