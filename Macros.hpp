@@ -18,4 +18,28 @@
 #include <iostream>
 using namespace std;
 
+template <typename T>
+class Defaults
+{
+  static T value;
+};
+
+template <typename T>
+class Defaults<T*>
+{
+  static T* value;
+};
+
+template<typename T>
+T Defaults<T>::value = 0;
+
+template<typename T>
+T* Defaults<T*>::value = nullptr;
+
+template<>
+string Defaults<string>::value = "";
+
+template<>
+char Defaults<char>::value = '\0';
+
 #endif
