@@ -13,12 +13,10 @@ int main()
   grafo->insert_nodo(segundo);
   grafo->insert_nodo(segundo);
   grafo->make_link(primero,segundo);
-  cout<<primero->links.at(0)->llegada->dato;
-  cout<<primero->x<<endl;
   cout<<primero->grade() << endl;
   grafo->nodos.sort();
   grafo->nodos.for_each([](Vertex<char> *i){
-    cout << i << endl;
+    cout << i->data << endl;
     }
   );
   return 0;

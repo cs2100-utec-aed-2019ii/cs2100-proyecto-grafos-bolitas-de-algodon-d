@@ -102,9 +102,23 @@ public:
 
 //busquedas---------------------------
 
-  Vertex<T> * BFS(){
+  Vertex<T> * BFS(Vertex<T>* buscado){
+      Vertex<T>*primero =  this->nodos->at(0);
+      List<Vertex<T>*> cola = new List<Vertex<T>*>;
+      //agregar elemento a la cola
+      primero->links->for_each(
+      [](Vertex<T> *i){
+          cola.add(*i);
+        }
+      );
+
+      Vertex<T> * aux = nullptr;
+      if(primero == buscado){
+        return buscado;
+      }
 
   }
+
   Vertex<T> * DFS(){
     
   }
