@@ -6,8 +6,8 @@ using namespace std;
 int main()
 {
   graph<false,char>* grafo = new graph<false,char>;
-  Vertex<char>* primero = new Vertex<char>(0,0);
-  Vertex<char>* segundo = new Vertex<char>(3,4);
+  Vertex<char>* primero = new Vertex<char>('a',0,0);
+  Vertex<char>* segundo = new Vertex<char>('b',3,4);
   grafo->insert_nodo(primero);
   grafo->insert_nodo(primero);
   grafo->insert_nodo(segundo);
