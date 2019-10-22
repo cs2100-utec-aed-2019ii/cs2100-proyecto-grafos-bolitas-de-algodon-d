@@ -58,6 +58,20 @@ public:
     head = new Node<T>;
     head->value = value;
   }
+  void add(T value)
+  {
+    size++;
+    if(head)
+    {
+      Node<T> *temp2 = new Node<T>;
+      temp2->value = value;
+      temp2->next = head;
+      head = temp2;
+      return;
+    }
+    head = new Node<T>;
+    head->value = value;
+  }
   void pop()
   {
     if(!head){return;}

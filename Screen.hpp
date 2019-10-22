@@ -1,5 +1,6 @@
 #ifndef SCREEN_H
 #define SCREEN_H
+#include<thread>
 #include "./Graph.hpp"
 #include "./Macros.hpp"
 

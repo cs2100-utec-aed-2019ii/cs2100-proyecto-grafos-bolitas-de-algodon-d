@@ -6,14 +6,21 @@
 #include "./Link.hpp"
 #include "./Macros.hpp"
 
+template<typename T>
+class Screen;
+
+template<bool dir, typename T>
+class graph;
+
 template<bool dir,typename T>
 struct graph_helper 
 {
-  
+  static void insert(graph<dir, T> *element, float x, float y, T dato = Defaults<T>::value)
+  {
+    Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
+    element->nodos.push(nuevo);
+  }
 };
-
-template<typename T>
-class Screen;
 
 template <bool dir = false, typename T = bool>
 class graph
@@ -31,13 +38,16 @@ public:
   }
 
   void insert_nodo(Vertex<T>* nodo){
-    Vertex<T>* nuevo = new Vertex<T>(nodo->x,nodo->y);
+    Vertex<T>* nuevo = new Vertex<T>(nodo->data, nodo->x,nodo->y);
     nodos.push(nuevo);
   }
 
-  void insert_nodo(float x,float y,T dato = 1){
-    Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
-    nodos.push(nuevo);
+  void insert_nodo(float x,float y,T dato = Defaults<T>::value){
+    graph_helper<dir,T>::insert(this, x, y, dato);
+  }
+
+  void insert_nodo(T dato,float x = 0,float y = 0){
+    graph_helper<dir,T>::insert(this, x, y, dato);
   }
 
   void make_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2 ){
@@ -142,6 +152,7 @@ public:
   }
 
   friend class Screen<T>;
+  friend class graph_helper<dir,T>;
 };
 
 #endif
