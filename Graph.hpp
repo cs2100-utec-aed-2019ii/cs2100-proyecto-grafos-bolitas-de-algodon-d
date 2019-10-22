@@ -113,24 +113,48 @@ public:
 //busquedas---------------------------
 
   Vertex<T> * BFS(Vertex<T>* buscado){
-      Vertex<T>*primero =  this->nodos->at(0);
-      List<Vertex<T>*> cola = new List<Vertex<T>*>;
-      //agregar elemento a la cola
-      primero->links->for_each(
-      [](Vertex<T> *i){
-          cola.add(*i);
-        }
-      );
-
-      Vertex<T> * aux = nullptr;
-      if(primero == buscado){
+      Vertex<T>*aux =  this->nodos->at(0);
+      if(aux == buscado){
         return buscado;
       }
-
+      List<Vertex<T>*> cola = new List<Vertex<T>*>;
+      List<Vertex<T>*> visitados = new List<Vertex<T>*>;
+      //agregar elemento a la cola
+      
+      while (visitados.length()< nodos.length())
+      { 
+        if(aux == buscado) return aux; 
+        visitados.push(aux);
+        aux->links->for_each(
+        [](Vertex<T> *i){
+          if (cola.exist(i)==false)cola.push(i);
+          }
+        );
+        aux = cola->pop_front();
+      }
   }
 
-  Vertex<T> * DFS(){
-    
+
+  Vertex<T> * DFS(Vertex<T>* buscado){
+      Vertex<T>*aux =  this->nodos->at(0);
+      if(aux == buscado){
+        return buscado;
+      }
+      List<Vertex<T>*> cola = new List<Vertex<T>*>;
+      List<Vertex<T>*> visitados = new List<Vertex<T>*>;
+      //agregar elemento al stack
+      
+      while (visitados.length()< nodos.length())
+      { 
+        if(aux == buscado) return aux; 
+        visitados.push(aux);
+        aux->links->for_each(
+        [](Vertex<T> *i){
+          if (cola.exist(i)==false)cola.add(i);
+          }
+        );
+        aux = cola->pop_front();
+      }
   }
 
   List <Vertex<T>*> get_neighbort(Vertex<T>* nodo){
@@ -160,10 +184,7 @@ public:
   float calc_distan(float x1,float x2,float y1,float y2){
     return sqrt( pow((x2-x1),2) + pow((y2-y1),2));
   }
-  
-  bool exist(T dato){
-    //nodos->for_each(nodos->head);
-  }
+
 
   friend class Screen<T>;
   friend class graph_helper<dir,T>;
