@@ -29,7 +29,18 @@ public: //Nota mental, poner esto en privado
   List<Vertex<T>*> nodos;
   List<Link<T>*> links;
 public:
-  graph (){}
+  graph (){
+    nodos->for_each(
+      [](Vertex<T>* i){
+        i = nullptr;
+      }
+    );
+    links->for_each(
+      [](Link<T>* i){
+        i = nullptr;
+      }
+    );
+  }
   graph (graph &grafo){
 
   }
@@ -83,7 +94,23 @@ public:
   }
 
   bool is_connect (){
-    
+    Vertex<T>*aux =  this->nodos->at(0);
+      List<Vertex<T>*> cola = new List<Vertex<T>*>;
+      List<Vertex<T>*> visitados = new List<Vertex<T>*>;
+      //agregar elemento a la cola
+      
+      while (visitados.length()< nodos.length())
+      { 
+        visitados.push(aux);
+        aux->links->for_each(
+        [](Vertex<T> *i){
+          if (cola.exist(i)==false)cola.push(i);
+          }
+        );
+        aux = cola->pop_front();
+      }
+      if(visitados->length()==nodos->length())return true;
+      else return false;
   }
   bool is_bipartited(){
 
@@ -93,20 +120,34 @@ public:
   }
   
   graph prim(Vertex<T>* inicial){
-    Vertex<T>* temp;
-    graph<dir,T>* nuevografo = new graph<dir,T>;
-    nodos.for_each(
-      [inicial, temp](Vertex<T> *i){
-        if(i == inicial)
-        {
-          temp = i;
-        }
+    Vertex<T>* inicio =  BFS(inicial);// Buscamos? o de frente hacemos el algoritmo?
+    Vertex<T>* aux=inicio;
+    graph nuevo = new graph;
+    //Encontrar minimo arista
+    nuevo.insert_nodo(aux);
+    float menorp = aux->links.at(0)->peso;
+    aux->links->for_each( 
+      [menorp](Link<T> *i){
+        if(i->peso<=menorp)menorp = i->peso;
+      }
+    );
+    int j = 0;
+    links->for_each( 
+      [menorp,&j](Link<T> *i){
+        if(i->peso==menorp&& j>0){j++;nuevo.insert_nodo(i);} // Traits - falta identificar si hay dos con el mismo peso(comprobación)
       }
     );
 
+//------ ---------------
+
+
+
+  
   
   }
-  graph kruskal(){
+
+
+  graph kruskal(){ 
 
   }
 
@@ -127,10 +168,10 @@ public:
         visitados.push(aux);
         aux->links->for_each(
         [](Vertex<T> *i){
-          if (cola.exist(i)==false)cola.push(i);
+          if (cola.exist(i)==false)cola.push(i); //falta implementar en la lista principal
           }
         );
-        aux = cola->pop_front();
+        aux = cola->pop_front(); //falta implementar en la lista principal
       }
   }
 
@@ -188,6 +229,9 @@ public:
 
   friend class Screen<T>;
   friend class graph_helper<dir,T>;
+
+
+
 };
 
 #endif
