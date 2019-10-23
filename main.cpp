@@ -6,15 +6,14 @@ using namespace std;
 int main()
 {
   graph<false,char>* grafo = new graph<false,char>;
-  Vertex<char>* primero = new Vertex<char>('a',0,0);
-  Vertex<char>* segundo = new Vertex<char>('b',3,4);
-  grafo->insert_nodo(primero);
-  grafo->insert_nodo(primero);
-  grafo->insert_nodo(segundo);
-  grafo->insert_nodo(segundo);
-  grafo->make_link(primero,segundo);
-  cout<<primero->grade() << endl;
-  grafo->nodos.sort();
+
+  grafo->insert_nodo('a',0,0);
+  grafo->insert_nodo('b',3,4);
+  grafo->insert_nodo('a',0,0);
+  grafo->insert_nodo('b',3,4);
+  grafo->make_link(0,1);
+  //grafo->nodos.sort();
+
   grafo->nodos.for_each([](Vertex<char> *i){
     cout << i->data << endl;
     }

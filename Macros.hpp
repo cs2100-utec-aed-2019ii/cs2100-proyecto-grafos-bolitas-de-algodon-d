@@ -19,13 +19,13 @@
 using namespace std;
 
 template <typename T>
-class Defaults
+struct Defaults
 {
   static T value;
 };
 
 template <typename T>
-class Defaults<T*>
+struct Defaults<T*>
 {
   static T* value;
 };

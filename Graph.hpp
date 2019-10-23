@@ -7,6 +7,12 @@
 #include "./Macros.hpp"
 
 template<typename T>
+class writer;
+
+template<typename T>
+class Parser;
+
+template<typename T>
 class Screen;
 
 template<bool dir, typename T>
@@ -19,6 +25,18 @@ struct graph_helper
   {
     Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
     element->nodos.push(nuevo);
+  }
+  static void make_link(graph<dir, T> *element, Vertex<T> *nodo_1,Vertex<T> *nodo_2)
+  {
+    auto x_1 = nodo_1->x;
+    auto x_2 = nodo_2->x;
+    auto y_1 = nodo_1->y;
+    auto y_2 = nodo_2->y;
+    float peso = element->calc_distan(x_1,x_2,y_1,y_2);
+    Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
+    nodo_1->links.push(nuevolink);
+    nodo_2->links.push(nuevolink);
+    element->links.push(nuevolink); 
   }
 };
 
@@ -48,11 +66,6 @@ public:
   virtual ~graph (){
   }
 
-  void insert_nodo(Vertex<T>* nodo){
-    Vertex<T>* nuevo = new Vertex<T>(nodo->data, nodo->x,nodo->y);
-    nodos.push(nuevo);
-  }
-
   void insert_nodo(float x,float y,T dato = Defaults<T>::value){
     graph_helper<dir,T>::insert(this, x, y, dato);
   }
@@ -60,23 +73,17 @@ public:
   void insert_nodo(T dato,float x = 0,float y = 0){
     graph_helper<dir,T>::insert(this, x, y, dato);
   }
+  void make_link(int first, int second)
+  {
+    make_link(nodos.at(first), nodos.at(second));
+  }
 
-  void make_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2 ){
-    auto x_1 = nodo_1->x;
-    auto x_2 = nodo_2->x;
-    auto y_1 = nodo_1->y;
-    auto y_2 = nodo_2->y;
-    float peso = calc_distan(x_1,x_2,y_1,y_2);
-    Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
-    nodo_1->links.push(nuevolink);
-    nodo_2->links.push(nuevolink);
-    links.push(nuevolink); 
+  void make_link(Vertex<T> *nodo_1,Vertex<T> *nodo_2){
+    graph_helper<dir,T>::make_link(this, nodo_1, nodo_2);
   }
 
   void rm_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2){
-    
     Link<T>* aux_delete = find_link(nodo_1,nodo_2); 
-
     delete aux_delete;
   }
 
@@ -228,6 +235,8 @@ public:
 
 
   friend class Screen<T>;
+  friend class Parser<T>;
+  friend class writer<T>;
   friend class graph_helper<dir,T>;
 
 
