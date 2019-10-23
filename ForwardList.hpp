@@ -30,7 +30,7 @@ public:
   List():head(nullptr), size(0){}
   ~List(){delete head; size = 0;}
   unsigned int length(){return size;}
-  T at(unsigned int position)
+  T& at(unsigned int position)
   {
     if(!head){throw;}
     Node<T> *temp = head;
@@ -115,6 +115,18 @@ public:
         return;
       }
       temp = temp->next;
+    }
+  }
+  T pop_front()
+  {
+    if(head)
+    {
+      size--;
+      T result = head->value;
+      Node<T> *temp = head;
+      head = head->next;
+      delete temp;
+      return result;
     }
   }
   void for_each(void (*exec)(T))
