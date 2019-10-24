@@ -172,6 +172,13 @@ public:
     sort();
     return bsearch(0, size-1, element);
   }
+  void clear()
+  {
+    while(size)
+    {
+      pop();
+    }
+  }
 };
 
 #endif

@@ -16,7 +16,11 @@ struct Vertex
   unsigned int grade(){
     return this->links.length();
   }
-  ~Vertex(){}
+  ~Vertex()
+  {
+    links.clear();
+    nodes.clear();
+  }
 };
 
 template<typename T>
