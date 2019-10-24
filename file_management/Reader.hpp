@@ -35,7 +35,14 @@ public:
     for(int i = 0; i < numaris; i++)
     {
       file->read((char*)&temp2, sizeof(basic_link));
-      value->make_link(temp2.e1, temp2.e2);
+      if(*isdirected)
+      {
+        value->make_link(temp2.e1, temp2.e2);
+      }
+      else
+      {
+        ((graph<false, T>*)value)->make_link(temp2.e1, temp2.e2);
+      }
     }
     return value;
   }
