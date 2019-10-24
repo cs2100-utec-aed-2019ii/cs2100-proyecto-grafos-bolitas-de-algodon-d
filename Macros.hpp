@@ -21,7 +21,9 @@ using namespace std;
 template <typename T>
 struct Defaults
 {
+  static int counter;
   static T value;
+  static T get_value();
 };
 
 template <typename T>
@@ -31,15 +33,44 @@ struct Defaults<T*>
 };
 
 template<typename T>
+int Defaults<T>::counter = -1;
+
+template<typename T>
 T Defaults<T>::value = 0;
+
+template<typename T>
+T Defaults<T>::get_value()
+{
+  counter++;
+  return value + counter;
+}
 
 template<typename T>
 T* Defaults<T*>::value = nullptr;
 
 template<>
+int Defaults<string>::counter = -1;
+
+template<>
 string Defaults<string>::value = "";
 
 template<>
-char Defaults<char>::value = '\0';
+string Defaults<string>::get_value()
+{
+  return value;
+}
+
+template<>
+int Defaults<char>::counter = -1;
+
+template<>
+char Defaults<char>::value = 49;
+
+template<>
+char Defaults<char>::get_value()
+{
+  counter++;
+  return value + counter;
+}
 
 #endif
