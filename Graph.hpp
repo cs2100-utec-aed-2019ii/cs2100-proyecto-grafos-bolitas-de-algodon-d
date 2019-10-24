@@ -112,15 +112,15 @@ public:
 
   bool is_connect (){
     Vertex<T>*aux =  this->nodos->at(0);
-      List<Vertex<T>*> cola = new List<Vertex<T>*>;
-      List<Vertex<T>*> visitados = new List<Vertex<T>*>;
+      List<Vertex<T>*> cola ;
+      List<Vertex<T>*> visitados ;
       //agregar elemento a la cola
       
       while (visitados.length()< nodos.length())
       { 
         visitados.push(aux);
         aux->links->for_each(
-        [](Vertex<T> *i){
+        [cola](Vertex<T> *i){
           if (cola.exist(i)==false)cola.push(i);
           }
         );
@@ -136,22 +136,25 @@ public:
       return (2*links->size)/(nodos->size /nodos->size) ;
   }
   
-  graph prim(Vertex<T>* inicial){
+  graph prim(T inicial){
     Vertex<T>* inicio =  BFS(inicial);// Buscamos? o de frente hacemos el algoritmo?
     Vertex<T>* aux=inicio;
+    List<Link<T>*> estruc;
     graph nuevo = new graph;
     //Encontrar minimo arista
     nuevo.insert_nodo(aux);
     float menorp = aux->links.at(0)->peso;
-    aux->links->for_each( 
+    aux->links.for_each( 
       [menorp](Link<T> *i){
         if(i->peso<=menorp)menorp = i->peso;
       }
     );
-    int j = 0;
-    aux->links->for_each( 
+    int j = 0; 
+    aux->links.for_each( 
       [menorp,&j](Link<T> *i){
-        if(i->peso==menorp&& j>0){j++;nuevo.insert_nodo(i);} // Traits - falta identificar si hay dos con el mismo peso(comprobación)
+        if(i->peso==menorp&& j>0){j++;nuevo.insert_nodo(i->llegada);
+          nuevo.make_link();
+         } // Traits - falta identificar si hay dos con el mismo peso(comprobación)
       }
     );
 
@@ -170,7 +173,7 @@ public:
 
 //busquedas---------------------------
 
-  Vertex<T> * BFS(Vertex<T>* buscado){
+ /* Vertex<T> * BFS(Vertex<T>* buscado){
       Vertex<T>*aux =  this->nodos->at(0);
       if(aux == buscado){
         return buscado;
@@ -190,10 +193,32 @@ public:
         );
         aux = cola->pop_front(); //falta implementar en la lista principal
       }
-  }
+  }*/
 
 
-  Vertex<T> * DFS(Vertex<T>* buscado){
+  Vertex<T> * BFS(T buscadob){
+      Vertex<T>*aux =  this->nodos.at(0);
+      if(aux->data == buscadob){
+        return aux;
+      }
+      List<Vertex<T>*> cola ;
+      List<Vertex<T>*> visitados ;
+      //agregar elemento a la cola
+      
+      while (visitados.length()< nodos.length())
+      { 
+        if(aux->data == buscadob) return aux; 
+        visitados.push(aux);
+        aux->links.for_each(
+        [cola](Vertex<T> *i){
+          if (cola.index(i)==-1)cola.push(i);
+          }
+        );
+        aux = cola.pop_front(); 
+      }
+    }
+
+  /*Vertex<T> * DFS(Vertex<T>* buscado){
       Vertex<T>*aux =  this->nodos->at(0);
       if(aux == buscado){
         return buscado;
@@ -213,7 +238,30 @@ public:
         );
         aux = cola->pop_front();
       }
-  }
+  }*/
+
+
+  Vertex<T> * DFS(T datob){
+      Vertex<T>*aux =  this->nodos.at(0);
+      if(aux->data == datob){
+        return aux;
+      }
+      List<Vertex<T>*> cola ;
+      List<Vertex<T>*> visitados;
+      //agregar elemento al stack
+      
+      while (visitados.length()< nodos.length())
+      { 
+        if(aux->data == datob) return aux; 
+        visitados.push(aux);
+        aux->links.for_each(
+        [cola](Vertex<T> *i){
+          if (cola.index(i)==-1)cola.add(i);
+          }
+        );
+        aux = cola.pop_front();
+      }
+    }
 
   List <Vertex<T>*> get_neighbort(Vertex<T>* nodo){
       Vertex<T>* temp = nullptr;

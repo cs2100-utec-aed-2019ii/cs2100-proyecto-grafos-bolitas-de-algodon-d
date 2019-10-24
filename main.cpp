@@ -12,6 +12,7 @@ int main()
   grafo->insert_nodo('a',0,0);
   grafo->insert_nodo('b',3,4);
   grafo->make_link(0,1);
+  cout<<grafo->BFS('a')->data;
   delete grafo;
   return 0;
 }
