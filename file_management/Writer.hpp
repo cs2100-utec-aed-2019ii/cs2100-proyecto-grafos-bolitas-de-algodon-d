@@ -26,7 +26,7 @@ public:
       *filename = *filename + ".owo";
     }
     file = new fstream(*filename, ios::out | ios::binary);
-    file->seekg(0);
+    file->seekp(0);
     graph<true, T> *value = (graph<true, T>*)element;
     numnodes = value->nodos.length();
     numaris = value->links.length();
@@ -47,6 +47,7 @@ public:
     }
     file->close();
     delete file;
+    file = nullptr;
   }
 };
 
