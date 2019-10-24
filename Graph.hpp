@@ -43,7 +43,7 @@ struct graph_helper
 template <bool dir = false, typename T = bool>
 class graph
 {
-public: //Nota mental, poner esto en privado
+private: 
   List<Vertex<T>*> nodos;
   List<Link<T>*> links;
 public:
@@ -64,6 +64,16 @@ public:
   }
   
   virtual ~graph (){
+    nodos.for_each(
+      [](Vertex<T> *i){
+        delete i;
+      }
+    );
+    links.for_each(
+      [](Link<T> *i){
+        delete i;
+      }
+    );
   }
 
   void insert_nodo(float x,float y,T dato = Defaults<T>::value){
