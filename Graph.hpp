@@ -48,12 +48,12 @@ public: //Nota mental, poner esto en privado
   List<Link<T>*> links;
 public:
   graph (){
-    nodos->for_each(
+    nodos.for_each(
       [](Vertex<T>* i){
         i = nullptr;
       }
     );
-    links->for_each(
+    links.for_each(
       [](Link<T>* i){
         i = nullptr;
       }
@@ -139,7 +139,7 @@ public:
       }
     );
     int j = 0;
-    links->for_each( 
+    aux->links->for_each( 
       [menorp,&j](Link<T> *i){
         if(i->peso==menorp&& j>0){j++;nuevo.insert_nodo(i);} // Traits - falta identificar si hay dos con el mismo peso(comprobación)
       }
