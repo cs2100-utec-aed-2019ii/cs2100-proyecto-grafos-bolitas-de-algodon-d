@@ -196,13 +196,13 @@ public:
   }*/
 
 
-  Vertex<T> * BFS(T buscadob){
-      Vertex<T>*aux =  this->nodos.at(0);
+  Vertex<T> * BFS(const T &buscadob){
+      Vertex<T>*aux = nodos.at(0);
       if(aux->data == buscadob){
         return aux;
       }
-      List<Vertex<T>*> cola ;
-      List<Vertex<T>*> visitados ;
+      const List<Vertex<T>*> cola ;
+      const List<Vertex<T>*> visitados ;
       //agregar elemento a la cola
       
       while (visitados.length()< nodos.length())
