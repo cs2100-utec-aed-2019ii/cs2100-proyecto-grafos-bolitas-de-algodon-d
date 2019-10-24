@@ -161,9 +161,9 @@ public:
           return mid; 
   
       if (at(mid) > value) 
-          return binarySearch(l, mid - 1, value); 
+          return bsearch(l, mid - 1, value); 
   
-      return binarySearch(mid + 1, r, value); 
+      return bsearch(mid + 1, r, value); 
     } 
     return -1;
   }
