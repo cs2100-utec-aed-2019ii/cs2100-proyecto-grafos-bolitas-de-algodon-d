@@ -1,6 +1,6 @@
 #ifndef PARSER_H
 #define PARSER_H
-#define FAST_MODE
+//#define FAST_MODE
 #include <fstream>
 #include "../Graph.hpp"
 #include "../Macros.hpp"
@@ -14,6 +14,8 @@ private:
   bool *isdirected;
   fstream *file;
   string *filename;
+  reader<T> *read;
+  writer<T> *write;
   void parsevtk(graph<false, T> *element)
   {
     string temp;
@@ -51,7 +53,7 @@ private:
       }
       for(int i = 1; i < numnode; i++)
       {
-        element->make_link(vals[i-1]-1, vals[i]-1);
+        element->make_link(vals[i-1], vals[i]);
       }
     }
   }
@@ -60,8 +62,13 @@ public:
   {
     isdirected = &_isdirected;
     filename = _filename;
+    read = new reader<T>(isdirected, filename);
+    write = new writer<T>(isdirected, filename);
   }
-  ~Parser(){}
+  ~Parser(){
+    delete read;
+    delete write;
+  }
   void import(void *element)
   {
     string name;
@@ -78,13 +85,11 @@ public:
   }
   void save(void *element)
   {
-
+    write->exec(element);
   }
-  void load(void *element)
+  void* load()
   {
-    string name;
-    cout << "Ingrese el nombre del archivo a cargar: ";
-    cin >> name;
+    return read->exec();
   }
 };
 
