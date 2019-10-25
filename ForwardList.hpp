@@ -30,7 +30,7 @@ public:
   List():head(nullptr), size(0){}
   ~List(){delete head; size = 0;}
   unsigned int length(){return size;}
-  T at(unsigned int position)
+  T& at(unsigned int position)
   {
     if(!head){throw;}
     Node<T> *temp = head;
@@ -53,6 +53,20 @@ public:
       }
       temp->next = new Node<T>;
       temp->next->value = value;
+      return;
+    }
+    head = new Node<T>;
+    head->value = value;
+  }
+  void add(T value)
+  {
+    size++;
+    if(head)
+    {
+      Node<T> *temp2 = new Node<T>;
+      temp2->value = value;
+      temp2->next = head;
+      head = temp2;
       return;
     }
     head = new Node<T>;
@@ -103,6 +117,18 @@ public:
       temp = temp->next;
     }
   }
+  T pop_front()
+  {
+    if(head)
+    {
+      size--;
+      T result = head->value;
+      Node<T> *temp = head;
+      head = head->next;
+      delete temp;
+      return result;
+    }
+  }
   void for_each(void (*exec)(T))
   {
     if(!head){return;}
@@ -135,9 +161,9 @@ public:
           return mid; 
   
       if (at(mid) > value) 
-          return binarySearch(l, mid - 1, value); 
+          return bsearch(l, mid - 1, value); 
   
-      return binarySearch(mid + 1, r, value); 
+      return bsearch(mid + 1, r, value); 
     } 
     return -1;
   }
@@ -145,6 +171,13 @@ public:
   {
     sort();
     return bsearch(0, size-1, element);
+  }
+  void clear()
+  {
+    while(size)
+    {
+      pop();
+    }
   }
 };
 

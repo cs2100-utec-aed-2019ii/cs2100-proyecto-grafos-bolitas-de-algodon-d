@@ -11,12 +11,16 @@ struct Vertex
   float x;
   float y;
   List<Link<T>*> links;
-  Vertex(float _x, float _y) : x(_x), y(_y){}
+  Vertex(T _data, float _x, float _y) : data(_data), x(_x), y(_y){}
 
   unsigned int grade(){
     return this->links.length();
   }
-  ~Vertex(){}
+  ~Vertex()
+  {
+    links.clear();
+    nodes.clear();
+  }
 };
 
 template<typename T>
@@ -27,7 +31,7 @@ struct Vertex<T*>
   float x;
   float y;
   List<Link<T*>*> links;
-  Vertex(float _x, float _y) : x(_x), y(_y){}
+  Vertex(T _data, float _x, float _y) : data(_data), x(_x), y(_y){}
 
   unsigned int grade(){
     return this->links.length();
