@@ -92,6 +92,21 @@ public:
       return ((y*2)/pantalla_y)+posicion(120,pantalla_y);    
     }
   }
+
+    //Botones
+  Vertice Insertar[4] = {
+    {{posicion(60,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
+    {{posicion(60,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}},
+    {{posicion(110,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
+    {{posicion(110,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}}
+  };
+  Vertice Eliminar[4] = {
+    {{posicion(160,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(160,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(210,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(210,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
+  };
+
   void IniciarGLUT(){
     glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
     glutInitWindowSize(pantalla_x,pantalla_y);
@@ -111,6 +126,19 @@ public:
     glPushMatrix();
     glTranslatef(-1.0,-1.0,0.0);
 
+     glBegin(GL_QUADS);
+        for (int i=0; i<4; i++) {
+         glColor3fv(Insertar[i].colorRGB);
+         glVertex3fv(Insertar[i].verticeXYZ);
+        }
+    glEnd();
+
+    glBegin(GL_QUADS);
+        for (int i=0; i<4; i++) {
+         glColor3fv(Eliminar[i].colorRGB);
+         glVertex3fv(Eliminar[i].verticeXYZ);
+        }
+    glEnd();
     //glPointSize(10);
     //glBegin(GL_POINTS); 
     //glColor3f(44.0/100,44.0/100,84.0/100);
