@@ -31,6 +31,7 @@ public:
   List():head(nullptr), size(0){}
   ~List(){delete head; size = 0;}
   unsigned int length(){return size;}
+  unsigned int length()const{return size;}
   T& at(unsigned int position)
   {
     if(!head){throw;}
@@ -129,8 +130,9 @@ public:
       temp->next = nullptr;
       delete temp;
       temp = nullptr;
+
       return result;
-    }
+    }return nullptr;    
   }
   void for_each(std::function<void(T)> exec)
   {
