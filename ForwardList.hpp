@@ -125,17 +125,11 @@ public:
       size--;
       T result = head->value;
       Node<T> *temp = head;
-<<<<<<< HEAD
-      head =temp->next;
-      temp->next=nullptr;
-      delete temp;
-      temp=nullptr;
-=======
       head = temp->next;
       temp->next = nullptr;
       delete temp;
       temp = nullptr;
->>>>>>> d3b9460e1f71bb7fa2bd803dce71b1514e1a3480
+
       return result;
     }return nullptr;    
   }
