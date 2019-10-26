@@ -1,6 +1,8 @@
 #ifndef MACROS_H
 #define MACROS_H
 
+#define GL_SILENCE_DEPRECATION
+
 #ifdef OSX
 
 #include <GLUT/glut.h>

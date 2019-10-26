@@ -14,7 +14,7 @@ struct Vertex
   int g;
   int b;
   List<Link<T>*> links;
-  Vertex(T _data, float _x, float _y) : data(_data), x(_x), y(_y){}
+  Vertex(T _data, float _x, float _y) : data(_data), x(_x), y(_y), r(0), g(0), b(0){}
 
   unsigned int grade(){
     return this->links.length();
