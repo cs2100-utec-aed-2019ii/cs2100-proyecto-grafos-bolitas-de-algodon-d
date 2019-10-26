@@ -111,30 +111,30 @@ public:
     glPushMatrix();
     glTranslatef(-1.0,-1.0,0.0);
 
-    //glPointSize(10);
-    //glBegin(GL_POINTS); 
-    //glColor3f(44.0/100,44.0/100,84.0/100);
-    //glVertex3f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y),0);
-    //glVertex3f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y),0);
-    //glEnd();
     if(val)
     {
       glPointSize(10);
       glBegin(GL_POINTS); 
-      glColor3f(44.0/100,44.0/100,84.0/100);
       val->nodos.for_each(
           [this](Vertex<T> *i)
           {
+            glColor3f(i->r/255.0,i->g/255.0,i->b/255.0);
             glVertex3f(valx(i->x), valy(i->y), 0);
           }
       );
       glEnd();
+
+      glBegin(GL_LINES);
+      val->links.for_each(
+          [this](Link<T> *i)
+          {
+            glColor3f(i->r/255.0,i->g/255.0,i->b/255.0);
+            glVertex2f(valx(i->partida->x), valy(i->partida->y));
+            glVertex2f(valx(i->llegada->x), valy(i->llegada->y));
+          }
+      );
+      glEnd();
     }
-    glBegin(GL_LINES);
-    glColor3f(231.0/100,76.0/100,60.0/100);
-    glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y));
-    glVertex2f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y));
-    glEnd();
 
     glPopMatrix();
 
@@ -177,10 +177,12 @@ public:
   {
     if(isdirected)
     {
+      if(!values2){values2 = new graph<true, T>();}
       parser->save(values2);
     }
     else
     {
+      if(!values){values = new graph<false, T>();}
       parser->save(values);
     }
   }
@@ -189,18 +191,21 @@ public:
     void *temp = parser->load();
     if(isdirected)
     {
+      if(values2){delete values2;values2 = nullptr;}
       values2 = (graph<true,T> *)temp;
     }
     else
     {
+      if(values){delete values;values = nullptr;}
       values = (graph<false,T> *)temp;
     }
   }
   void import()
   {
     isdirected = false;
+    if(!values){values = new graph<false, T>();}
     parser->import(values);
-    cout << "Owo" << endl;
+    cout << "VTK Cargado" << endl;
   }
 };
 
