@@ -76,6 +76,9 @@ public:
     cin >> name;
     graph<false, T> *value = (graph<false,T>*)element;
     file = new fstream(name, ios::in);
+    if(!(file->is_open())){
+      return;
+    }
     parsevtk(value);
     file->close();
     delete file;
