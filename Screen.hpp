@@ -1,5 +1,6 @@
 #ifndef SCREEN_H
 #define SCREEN_H
+#define ECHAP 27
 #include<thread>
 #include "./Graph.hpp"
 #include "./file_management/Parser.hpp"
@@ -29,7 +30,7 @@ private:
   EstadoRaton raton;
   float x,y;
 public:
-  Screen(int &argc, char **argv, float x, float y, void(*draw)(void), void(mouse)(int, int, int, int)):values(nullptr), values2(nullptr), isdirected(false), pantalla_x(x), pantalla_y(y)
+  Screen(int &argc, char **argv, float x, float y, void(*draw)(void), void(mouse)(int, int, int, int), void(keys)(unsigned char,int, int)):values(nullptr), values2(nullptr), isdirected(false), pantalla_x(x), pantalla_y(y)
   {
     parser = new Parser<T>(isdirected, &filename);
     glutInit(&argc, argv);
@@ -37,6 +38,7 @@ public:
     glClear(GL_COLOR_BUFFER_BIT);
     glutDisplayFunc(draw);
     glutMouseFunc(mouse);
+    glutKeyboardFunc(keys);
   }
   ~Screen()
   {
@@ -106,6 +108,12 @@ public:
     {{posicion(210,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
     {{posicion(210,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
   };
+  Vertice Siguiente[4] = {
+    {{posicion(260,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(260,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(310,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(310,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
+  };
 
   void IniciarGLUT(){
     glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
@@ -125,6 +133,27 @@ public:
     
     glPushMatrix();
     glTranslatef(-1.0,-1.0,0.0);
+
+    glBegin(GL_QUADS);
+        for (int i=0; i<4; i++) {
+         glColor3fv(Insertar[i].colorRGB);
+         glVertex3fv(Insertar[i].verticeXYZ);
+        }
+    glEnd();
+
+    glBegin(GL_QUADS);
+        for (int i=0; i<4; i++) {
+         glColor3fv(Eliminar[i].colorRGB);
+         glVertex3fv(Eliminar[i].verticeXYZ);
+        }
+    glEnd();
+
+    glBegin(GL_QUADS);
+        for (int i=0; i<4; i++) {
+         glColor3fv(Siguiente[i].colorRGB);
+         glVertex3fv(Siguiente[i].verticeXYZ);
+        }
+    glEnd();
 
     if(val)
     {
@@ -157,18 +186,37 @@ public:
   } 
   void eventHandler(int boton,int state,int mousex,int mousey)
   {
+    graph<false,T> *val = (isdirected)? (graph<false,T> *)values2 : values;
     if (boton == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
         raton.x = ((mousex)*2)/pantalla_x;
         x = raton.x;
-        std::cout<<mousex<< " ";
-        std::cout<<raton.x<<std::endl;
-        std::cout<<"______"<<std::endl;
+        //std::cout<<mousex<< " ";
+        //std::cout<<raton.x<<std::endl;
+        //std::cout<<"______"<<std::endl;
         
         raton.y = ((pantalla_y-mousey)*2)/pantalla_y;
         y = raton.y;
-        std::cout<<pantalla_y-mousey<< " ";
-        std::cout<<raton.y<<std::endl;
+        //std::cout<<pantalla_y-mousey<< " ";
+        //std::cout<<raton.y<<std::endl;
+
+        if(val)
+        {
+          Vertex<T> *temp = nullptr;
+          val->nodos.for_each(
+            [this, temp](Vertex<T> *i) mutable -> void{
+              if((valx(i->x))-posicion(3,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(3,pantalla_x)){
+                if((valy(i->y))-posicion(3,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(3,pantalla_y)){
+                  temp=i;
+                }
+              }
+            }
+          );
+          if(temp)
+          {
+            //ELIMINAR NODO uwu
+          }
+        }
 
         if(posicion(60,pantalla_x) <= raton.x && raton.x <= posicion(110,pantalla_x)){
             if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
@@ -177,13 +225,17 @@ public:
         }
         if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
             if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+               read();
+            }
+        }
+        if(posicion(260,pantalla_x) <= raton.x && raton.x <= posicion(310,pantalla_x)){
+            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
                import();
             }
         }  
     }else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
-       glClear(GL_COLOR_BUFFER_BIT);
-        
+       glClear(GL_COLOR_BUFFER_BIT);        
     }
     glutPostRedisplay();  
 
@@ -221,6 +273,18 @@ public:
     if(!values){values = new graph<false, T>();}
     parser->import(values);
     cout << "VTK Cargado" << endl;
+  }
+  void closeall(unsigned char tecla,int x,int y)
+  {
+    delete values2;
+    delete values;
+     switch (tecla) {
+	    case ECHAP:
+		    exit(1);
+		    break;
+	    default:
+	    	break;
+	}
   }
 };
 
