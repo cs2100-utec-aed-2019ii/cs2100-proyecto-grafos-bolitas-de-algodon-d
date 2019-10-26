@@ -80,51 +80,27 @@ public:
   {
     glutMainLoop();
   }
+
   void drawHandler(void)
   {
     graph<false,T> *val = (isdirected)? (graph<false,T> *)values2 : values;
+    
     glPushMatrix();
     glTranslatef(-1.0,-1.0,0.0);
 
-    //////////////////////////////////////
-    glColor3f(44.0/100,44.0/100,84.0/100);
-    glPointSize(10); 
+    glPointSize(10);
     glBegin(GL_POINTS); 
-    glVertex2f(1.5,1);  
-
+    glColor3f(44.0/100,44.0/100,84.0/100);
+    glVertex3f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y),0);
+    glVertex3f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y),0);
     glEnd();
-
-    // glLoadIdentity();
+    
     glBegin(GL_LINES);
+    glColor3f(231.0/100,76.0/100,60.0/100);
     glColor3f(231.0/100,76.0/100,60.0/100);
     glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y));
     glVertex2f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y));
-
-    glVertex2f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y));
-    glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(270,pantalla_y));
-
-    glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(270,pantalla_y));
-    glVertex2f(recalculo_x1(300,pantalla_x),recalculo_y1(270,pantalla_y));
-
-    glVertex2f(recalculo_x1(300,pantalla_x),recalculo_y1(270,pantalla_y));
-    glVertex2f(recalculo_x1(360,pantalla_x),recalculo_y1(180,pantalla_y));
-
-    glVertex2f(recalculo_x1(360,pantalla_x),recalculo_y1(180,pantalla_y));
-    glVertex2f(recalculo_x1(300,pantalla_x),recalculo_y1(90,pantalla_y));
-
-    glVertex2f(recalculo_x1(300,pantalla_x),recalculo_y1(90,pantalla_y));
-    glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y));
-
-    glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y));
-    glVertex2f(recalculo_x1(300,pantalla_x),recalculo_y1(270,pantalla_y));
-
-    glVertex2f(recalculo_x1(300,pantalla_x),recalculo_y1(90,pantalla_y));
-    glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(270,pantalla_y));
     glEnd();
-
-  
-    //////////////////////////////////// 
-     
     //Eliminar matriz...
     glPopMatrix();
 
