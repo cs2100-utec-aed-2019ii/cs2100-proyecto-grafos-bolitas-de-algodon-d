@@ -1,6 +1,7 @@
 #include <GLUT/glut.h>
 #include <iostream>
 //probar aparte
+//usar para OSX: g++ grafin.cpp -o gl -framework OpenGL -framework GLUT
 float pantalla_x = 640.0;
 float pantalla_y = 480.0;
 
