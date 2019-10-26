@@ -7,6 +7,7 @@ int main(int argc, char **argv)
   value = new Screen<char>(argc, argv, 640, 480, drawHandler, mouseHandler);
   value->Start();
   delete value;
+  
   List<int> a;
   a.push(4);
   a.push(2);
