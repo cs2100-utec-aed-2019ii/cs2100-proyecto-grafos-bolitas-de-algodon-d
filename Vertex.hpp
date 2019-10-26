@@ -10,6 +10,9 @@ struct Vertex
   T data;
   float x;
   float y;
+  int r;
+  int g;
+  int b;
   List<Link<T>*> links;
   Vertex(T _data, float _x, float _y) : data(_data), x(_x), y(_y){}
 
@@ -30,6 +33,9 @@ struct Vertex<T*>
   T* data;
   float x;
   float y;
+  int r;
+  int g;
+  int b;
   List<Link<T*>*> links;
   Vertex(T _data, float _x, float _y) : data(_data), x(_x), y(_y){}
 
