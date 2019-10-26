@@ -33,6 +33,7 @@ int main(int argc, char **argv)
 
   value->Start();
   delete value;
+  
   List<int> a;
   a.push(4);
   a.push(2);

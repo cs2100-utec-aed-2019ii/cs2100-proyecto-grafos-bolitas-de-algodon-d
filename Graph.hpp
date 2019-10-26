@@ -21,11 +21,6 @@ class graph;
 template<bool dir,typename T>
 struct graph_helper 
 {
-  static void insert(graph<dir, T> *element, float x, float y, T dato = Defaults<T>::value)
-  {
-    Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
-    element->nodos.push(nuevo);
-  }
   static void make_link(graph<dir, T> *element, Vertex<T> *nodo_1,Vertex<T> *nodo_2)
   {
     if(nodo_1 == nodo_2) {
@@ -51,20 +46,12 @@ class graph
 private: 
   List<Vertex<T>*> nodos;
   List<Link<T>*> links;
+  Vertex<T> *max_x;
+  Vertex<T> *max_y;
 public:
-  graph (){
-    for (int i = 0; i < nodos.length(); i++)
-    {
-      nodos.at(i)=nullptr;
-    }
-    for (int i = 0; i < links.length(); i++)
-    {
-      links.at(i)=nullptr;
-    }
-    
-  }
-  graph (graph &grafo){
 
+  graph (): max_x(nullptr), max_y(nullptr){}
+  graph (graph &grafo): max_x(nullptr), max_y(nullptr){
   }
   
   virtual ~graph (){
@@ -80,12 +67,32 @@ public:
     );
   }
 
-  void insert_nodo(float x,float y,T dato = Defaults<T>::value){
-    graph_helper<dir,T>::insert(this, x, y, dato);
+  void insert_nodo(float x,float y,T dato = Defaults<T>::get_value()){
+    Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
+    if(max_x != nullptr){
+      if(max_x->x < x){
+        max_x = nuevo;
+      }
+    }else{
+      max_x = nuevo;
+    }
+    if(!(max_y)){max_y = nuevo;}
+    else {if(max_y->y < y){max_y = nuevo;}}
+    nodos.push(nuevo);
   }
 
   void insert_nodo(T dato,float x = 0,float y = 0){
-    graph_helper<dir,T>::insert(this, x, y, dato);
+    Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
+    if(max_x != nullptr){
+      if(max_x->x < x){
+        max_x = nuevo;
+      }
+    }else{
+      max_x = nuevo;
+    }
+    if(!(max_y)){max_y = nuevo;}
+    else {if(max_y->y < y){max_y = nuevo;}}
+    nodos.push(nuevo);
   }
 
   //--------------
