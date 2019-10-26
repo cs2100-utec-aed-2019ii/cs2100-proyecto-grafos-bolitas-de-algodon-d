@@ -38,9 +38,32 @@ struct graph_helper
     nodo_2->links_de_donde.push(nuevolink);//dirigido no dirigido diferencia
     element->links.push(nuevolink); 
   }
+  static void del(graph<dir, T>* value, Vertex<T> *val)
+  {
+  }
 };
 
-template <bool dir = false, typename T = unsigned char>
+template<typename T>
+struct graph_helper<true,T> 
+{
+  static void make_link(graph<true, T> *element, Vertex<T> *nodo_1,Vertex<T> *nodo_2)
+  {
+    if(nodo_1 == nodo_2) {
+      cout<<"no se pueden hacer ciclos, arista eliminado de "<<nodo_1->data<<" a "<<nodo_1->data<<endl;
+      return;
+    }
+    auto x_1 = nodo_1->x;
+    auto x_2 = nodo_2->x;
+    auto y_1 = nodo_1->y;
+    auto y_2 = nodo_2->y;
+    float peso = element->calc_distan(x_1,x_2,y_1,y_2);
+    Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
+    nodo_1->links.push(nuevolink);
+    element->links.push(nuevolink); 
+  }
+};
+
+template <bool dir = false, typename T = unsigned int>
 class graph
 {
 private: 
@@ -97,8 +120,8 @@ public:
   }
 
   void rm_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2){
-    Link<T>* aux_delete = find_link(nodo_1,nodo_2); 
-    delete aux_delete;
+    //Link<T>* aux_delete = find_link(nodo_1,nodo_2); 
+    //delete aux_delete;
   }
 
   void rm_Vertex(T dato){
@@ -152,7 +175,6 @@ public:
                    a_disponi.push(aux->links.at(i));
                 }
              }
-////Vertice con el que llega de menor distancia
             for (int i = 0; i < a_disponi.length(); i++)
             {
               cout<<a_disponi.at(i)->peso<<endl;

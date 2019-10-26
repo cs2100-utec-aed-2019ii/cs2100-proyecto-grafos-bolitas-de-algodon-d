@@ -15,7 +15,7 @@ typedef struct{
     int izq,der;
 }EstadoRaton;
 
-template<typename T=char>
+template<typename T=int>
 class Screen
 {
 private:
