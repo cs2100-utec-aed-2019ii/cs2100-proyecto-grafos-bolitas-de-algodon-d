@@ -188,18 +188,18 @@ public:
               if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x)){
                 if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y)){
                   temp=i;
-                  if(temp)
-                  {
-                    //ELIMINAR NODO uwu
-                     std::cout<<"Esto se deveria borrar xD ";         
-                    temp=nullptr;
-                  }
                 }
               }
             }
-
           );
-          
+          if(temp)
+            {
+              if(isdirected)
+              {
+                values2->rm_Vertex(temp);
+              }      
+              temp=nullptr;
+            }
         }
 
         if(posicion(60,pantalla_x) <= raton.x && raton.x <= posicion(110,pantalla_x)){

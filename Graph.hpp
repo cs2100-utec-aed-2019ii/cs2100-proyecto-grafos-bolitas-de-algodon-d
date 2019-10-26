@@ -133,8 +133,7 @@ public: //private
 public:
 
   graph (): max_x(0), max_y(0){}
-  graph (graph &grafo): max_x(0), max_y(0){
-  }
+  graph (graph &grafo): max_x(0), max_y(0){}
   
   virtual ~graph (){
     nodos.for_each(
@@ -186,6 +185,10 @@ public:
   void rm_Vertex(T dato){
     Vertex<T>* temp = BFS(dato);
     graph_helper<dir, T>::del(this, temp);
+  }
+
+  void rm_Vertex(Vertex<T>* dato){
+    graph_helper<dir, T>::del(this, dato);
   }
 
   bool is_connect (){

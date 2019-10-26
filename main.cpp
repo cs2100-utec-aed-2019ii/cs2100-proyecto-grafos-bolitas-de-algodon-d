@@ -17,9 +17,10 @@ int main(int argc, char **argv)
   grafo.make_link(2,3);
   auto a = grafo.nodos.at(0);
   auto b = grafo.nodos.at(2);
-  cout<<grafo.BFS(a->data)->data<<endl;
-  cout<<"La densidad del grafo es: "<<grafo.calc_density()<<endl;
-  cout<<"El grado del vertice "<< grafo.DFS(a->data)->data<<" es "<< grafo.DFS(a->data)->grade() <<endl;
+  //cout<<"La data es BFS: "<<grafo.BFS(a->data)->data<<endl;
+  //cout<<"La data es DFS: "<<grafo.DFS(a->data)->data<<endl;
+  //cout<<"La densidad del grafo es: "<<grafo.calc_density()<<endl;
+  //cout<<"El grado del vertice "<< grafo.DFS(a->data)->data<<" es "<< grafo.DFS(a->data)->grade() <<endl;
   cout<<"Esta conectado: "<<grafo.is_connect()<<endl;
   for(int i = 0; i< grafo.get_neighbort(a->data).length();i++){
     cout<<grafo.get_neighbort(a->data).at(i)->data<<" ";
