@@ -204,6 +204,11 @@ public:
         }
         if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
             if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+               read();
+            }
+        }
+        if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
+            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
                import();
             }
         }  
