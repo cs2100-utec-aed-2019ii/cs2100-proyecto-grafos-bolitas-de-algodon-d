@@ -403,6 +403,9 @@ void Control_Raton(int boton,int state,int mousex,int mousey){
     }
     glutPostRedisplay();
 }
+void teclado(unsigned char tecla,int x,int y){
+
+}
 
 int main(int argc,char** argv){
     glutInit(&argc,argv);
@@ -412,7 +415,7 @@ int main(int argc,char** argv){
     glutDisplayFunc(Pintar);
     //glutIdleFunc(Pintar);
     glutMouseFunc(Control_Raton);
-    
+    glutKeyboardFunc(teclado);
     glutMainLoop();
     return EXIT_SUCCESS;
 }
