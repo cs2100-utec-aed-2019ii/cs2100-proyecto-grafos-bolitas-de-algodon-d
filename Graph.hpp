@@ -43,7 +43,7 @@ struct graph_helper
 template <bool dir = false, typename T = unsigned char>
 class graph
 {
-private: 
+public: //private
   List<Vertex<T>*> nodos;
   List<Link<T>*> links;
   float max_x;
@@ -270,7 +270,25 @@ public:
         destiny = temp->links.at(i)->llegada;
         listaret.push(destiny);
       }
+      for (unsigned int i = 0; i < temp->links_de_donde.length(); i++)
+      {
+        destiny = temp->links_de_donde.at(i)->partida;
+        listaret.push(destiny);
+      }
       return listaret;
+  }
+
+
+  bool  val_neight_threshold(T dato1,T dato2){
+     float sumaprom = 0;
+     Vertex<T>* d_1 = BFS(dato1);
+     Vertex<T>* d_2 = BFS(dato2);
+     for(int i = 0;i< links.length();i++ ){
+       sumaprom = links.at(i)->peso+sumaprom;
+     }
+     sumaprom = (sumaprom/links.length());
+    if(calc_distan(d_1->x,d_2->x,d_1->y,d_2->y) <= sumaprom) return true;
+    else return false;
   }
 
   //auxiliares
