@@ -35,7 +35,7 @@ struct graph_helper
     float peso = element->calc_distan(x_1,x_2,y_1,y_2);
     Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
     nodo_1->links.push(nuevolink);
-    nodo_2->links.push(nuevolink);
+   // nodo_2->links.push(nuevolink);//dirigido no dirigido diferencia
     element->links.push(nuevolink); 
   }
 };
@@ -83,6 +83,13 @@ public:
   void insert_nodo(T dato,float x = 0,float y = 0){
     graph_helper<dir,T>::insert(this, x, y, dato);
   }
+
+  //--------------
+  void insert_nodo(Vertex<T>* nodo){
+    nodos.push(nodo);
+  }
+  //---------------
+
   void make_link(int first, int second)
   {
     make_link(nodos.at(first), nodos.at(second));
@@ -111,24 +118,28 @@ public:
   }
 
   bool is_connect (){
-    Vertex<T>*aux =  this->nodos->at(0);
+      Vertex<T>*aux =  nodos.at(0);
       List<Vertex<T>*> cola ;
       List<Vertex<T>*> visitados ;
-      //agregar elemento a la cola
       
-      while (visitados.length()< nodos.length())
-      { 
-        visitados.push(aux);
-        aux->links->for_each(
-        [cola](Vertex<T> *i){
-          if (cola.exist(i)==false)cola.push(i);
-          }
-        );
-        aux = cola->pop_front();
+      while ( visitados.length()< nodos.length())
+      {   
+          visitados.push(aux);
+          if(aux->links.length()!=0){
+          for (int i = 0; i < aux->links.length(); i++)
+            {   
+              if(cola.index(aux->links.at(i)->llegada)==-1 && visitados.index(aux->links.at(i)->llegada)==-1){
+                cola.push(aux->links.at(i)->llegada);
+              }
+            }
+          }    
+          aux = cola.pop_front();
+          if(cola.length()==0)break;
       }
-      if(visitados->length()==nodos->length())return true;
+      if(visitados.length()==nodos.length())return true;
       else return false;
   }
+
   bool is_bipartited(){
 
   }
@@ -154,16 +165,9 @@ public:
       [menorp,&j](Link<T> *i){
         if(i->peso==menorp&& j>0){j++;nuevo.insert_nodo(i->llegada);
           nuevo.make_link();
-         } // Traits - falta identificar si hay dos con el mismo peso(comprobación)
+         } 
       }
     );
-
-//------ ---------------
-
-
-
-  
-  
   }
 
 
@@ -173,116 +177,77 @@ public:
 
 //busquedas---------------------------
 
- /* Vertex<T> * BFS(Vertex<T>* buscado){
-      Vertex<T>*aux =  this->nodos->at(0);
-      if(aux == buscado){
-        return buscado;
-      }
-      List<Vertex<T>*> cola = new List<Vertex<T>*>;
-      List<Vertex<T>*> visitados = new List<Vertex<T>*>;
-      //agregar elemento a la cola
-      
-      while (visitados.length()< nodos.length())
-      { 
-        if(aux == buscado) return aux; 
-        visitados.push(aux);
-        aux->links->for_each(
-        [](Vertex<T> *i){
-          if (cola.exist(i)==false)cola.push(i); //falta implementar en la lista principal
-          }
-        );
-        aux = cola->pop_front(); //falta implementar en la lista principal
-      }
-  }*/
-
-
-  Vertex<T> * BFS(const T &buscadob){
+  Vertex<T> * BFS( T buscadob){
       Vertex<T>*aux = nodos.at(0);
       if(aux->data == buscadob){
         return aux;
       }
-      const List<Vertex<T>*> cola ;
-      const List<Vertex<T>*> visitados ;
-      //agregar elemento a la cola
-      
-      while (visitados.length()< nodos.length())
+      List<Vertex<T>*>cola ;
+      List<Vertex<T>*>visitados ;
+      while ( visitados.length()< nodos.length())
       { 
         if(aux->data == buscadob) return aux; 
-        visitados.push(aux);
-        aux->links.for_each(
-        [cola](Vertex<T> *i){
-          if (cola.index(i)==-1)cola.push(i);
+        else{  
+          visitados.push(aux);
+          if(aux->links.length()!=0){
+          for (int i = 0; i < aux->links.length(); i++)
+            {   
+              if(cola.index(aux->links.at(i)->llegada)==-1 && visitados.index(aux->links.at(i)->llegada)==-1){
+                cola.push(aux->links.at(i)->llegada);
+              }
+            }
           }
-        );
-        aux = cola.pop_front(); 
+          
+          aux = cola.pop_front();
+        }  
       }
-    }
-
-  /*Vertex<T> * DFS(Vertex<T>* buscado){
-      Vertex<T>*aux =  this->nodos->at(0);
-      if(aux == buscado){
-        return buscado;
-      }
-      List<Vertex<T>*> cola = new List<Vertex<T>*>;
-      List<Vertex<T>*> visitados = new List<Vertex<T>*>;
-      //agregar elemento al stack
       
-      while (visitados.length()< nodos.length())
-      { 
-        if(aux == buscado) return aux; 
-        visitados.push(aux);
-        aux->links->for_each(
-        [](Vertex<T> *i){
-          if (cola.exist(i)==false)cola.add(i);
-          }
-        );
-        aux = cola->pop_front();
-      }
-  }*/
+      return nullptr;
+  }
+
+  
 
 
-  Vertex<T> * DFS(T datob){
-      Vertex<T>*aux =  this->nodos.at(0);
-      if(aux->data == datob){
+  Vertex<T> * DFS(T buscadob){
+      Vertex<T>*aux = nodos.at(0);
+      if(aux->data == buscadob){
         return aux;
       }
-      List<Vertex<T>*> cola ;
-      List<Vertex<T>*> visitados;
-      //agregar elemento al stack
-      
-      while (visitados.length()< nodos.length())
+      List<Vertex<T>*>cola ;
+      List<Vertex<T>*>visitados ;
+      while ( visitados.length()< nodos.length())
       { 
-        if(aux->data == datob) return aux; 
-        visitados.push(aux);
-        aux->links.for_each(
-        [cola](Vertex<T> *i){
-          if (cola.index(i)==-1)cola.add(i);
+        if(aux->data == buscadob) return aux; 
+        else{  
+          visitados.push(aux);
+          if(aux->links.length()!=0){
+          for (int i = 0; i < aux->links.length(); i++)
+            {   
+              if(cola.index(aux->links.at(i)->llegada)==-1 && visitados.index(aux->links.at(i)->llegada)==-1){
+                cola.add(aux->links.at(i)->llegada);
+              }
+            }
           }
-        );
-        aux = cola.pop_front();
-      }
-    }
+          
+          aux = cola.pop_front();
+        }  
+      }  
+      return nullptr;
+  }
 
-  List <Vertex<T>*> get_neighbort(Vertex<T>* nodo){
+  List <Vertex<T>*> get_neighbort(T dato){
       Vertex<T>* temp = nullptr;
       
-      nodos->for_each( 
-        [temp, nodo](Vertex<T> *i){
-        if(i == nodo)
-          {
-          temp = i;
-          }
-        }
-      );
-
-      List<Vertex<T>*> listaret = new List<Vertex<T>*>;
+      temp = BFS(dato); // Uso de BFS para buscar nodos
+      
+      List<Vertex<T>*> listaret;
       Vertex<T>* destiny = nullptr;
       
-      temp->links->for_each( [destiny,listaret] (Link<T> *i){
-          destiny = i->llegada;    
-          listaret->push_back(destiny);
-        } 
-      );
+      for (unsigned int i = 0; i < temp->links.length(); i++)
+      {
+        destiny = temp->links.at(i)->llegada;
+        listaret.push(destiny);
+      }
       return listaret;
   }
 
