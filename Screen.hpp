@@ -6,6 +6,11 @@
 #include "./Macros.hpp"
 
 typedef struct{
+    GLfloat verticeXYZ[3];
+    GLfloat colorRGB[3];
+}Vertice;
+
+typedef struct{
     float x,y;
     int izq,der;
 }EstadoRaton;
@@ -125,17 +130,15 @@ public:
       );
       glEnd();
     }
-    
     glBegin(GL_LINES);
     glColor3f(231.0/100,76.0/100,60.0/100);
     glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y));
     glVertex2f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y));
     glEnd();
-    //Eliminar matriz...
+
     glPopMatrix();
 
     glFlush();
-    
   } 
   void eventHandler(int boton,int state,int mousex,int mousey)
   {
@@ -151,6 +154,17 @@ public:
         y = raton.y;
         std::cout<<pantalla_y-mousey<< " ";
         std::cout<<raton.y<<std::endl;
+
+        if(posicion(60,pantalla_x) <= raton.x && raton.x <= posicion(110,pantalla_x)){
+            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+               save();
+            }
+        }
+        if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
+            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+               import();
+            }
+        }  
     }else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
        glClear(GL_COLOR_BUFFER_BIT);
@@ -175,12 +189,18 @@ public:
     void *temp = parser->load();
     if(isdirected)
     {
-      values2 = temp;
+      values2 = (graph<true,T> *)temp;
     }
     else
     {
-      values = temp;
+      values = (graph<false,T> *)temp;
     }
+  }
+  void import()
+  {
+    isdirected = false;
+    parser->import(values);
+    cout << "Owo" << endl;
   }
 };
 
