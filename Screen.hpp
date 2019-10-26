@@ -7,16 +7,16 @@
 #include "./Macros.hpp"
 
 typedef struct{
-    GLfloat verticeXYZ[3];
-    GLfloat colorRGB[3];
+  GLfloat verticeXYZ[3];
+  GLfloat colorRGB[3];
 }Vertice;
 
 typedef struct{
-    float x,y;
-    int izq,der;
+  float x,y;
+  int izq,der;
 }EstadoRaton;
 
-template<typename T=char>
+template<typename T=int>
 class Screen
 {
 private:
@@ -75,26 +75,6 @@ public:
     return result;
   }
 
-  float recalculo_x1(float x,int pantalla_x){
-    if(x <= pantalla_x-80){
-      return ((x*2)/pantalla_x)+posicion(40,pantalla_x);
-    }
-    else{
-      x = pantalla_x-80;
-      return ((x*2)/pantalla_x)+posicion(40,pantalla_x);
-    }
-  }
-
-  float recalculo_y1(float y,int pantalla_y){
-    if(y <= pantalla_y-140){
-      return ((y*2)/pantalla_y)+posicion(120,pantalla_y);
-    }
-    else{
-      y = pantalla_y-140;
-      return ((y*2)/pantalla_y)+posicion(120,pantalla_y);    
-    }
-  }
-
     //Botones
   Vertice Insertar[4] = {
     {{posicion(60,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
@@ -109,10 +89,10 @@ public:
     {{posicion(210,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
   };
   Vertice Siguiente[4] = {
-    {{posicion(260,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
-    {{posicion(260,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
-    {{posicion(310,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
-    {{posicion(310,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
+    {{posicion(260,pantalla_x),posicion(75,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
+    {{posicion(260,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
+    {{posicion(310,pantalla_x),posicion(75,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
+    {{posicion(310,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}}
   };
 
   void IniciarGLUT(){
@@ -190,7 +170,7 @@ public:
     if (boton == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
         raton.x = ((mousex)*2)/pantalla_x;
-        x = raton.x;
+        //x = raton.x;
         //std::cout<<mousex<< " ";
         //std::cout<<raton.x<<std::endl;
         //std::cout<<"______"<<std::endl;
@@ -205,17 +185,21 @@ public:
           Vertex<T> *temp = nullptr;
           val->nodos.for_each(
             [this, temp](Vertex<T> *i) mutable -> void{
-              if((valx(i->x))-posicion(3,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(3,pantalla_x)){
-                if((valy(i->y))-posicion(3,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(3,pantalla_y)){
+              if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x)){
+                if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y)){
                   temp=i;
+                  if(temp)
+                  {
+                    //ELIMINAR NODO uwu
+                     std::cout<<"Esto se deveria borrar xD ";         
+                    temp=nullptr;
+                  }
                 }
               }
             }
+
           );
-          if(temp)
-          {
-            //ELIMINAR NODO uwu
-          }
+          
         }
 
         if(posicion(60,pantalla_x) <= raton.x && raton.x <= posicion(110,pantalla_x)){
@@ -252,6 +236,7 @@ public:
       if(!values){values = new graph<false, T>();}
       parser->save(values);
     }
+    cout << "Grafo Guardado" << endl;
   }
   void read()
   {
@@ -266,6 +251,7 @@ public:
       if(values){delete values;values = nullptr;}
       values = (graph<false,T> *)temp;
     }
+    cout << "Grafo Leido" << endl;
   }
   void import()
   {
@@ -278,13 +264,13 @@ public:
   {
     delete values2;
     delete values;
-     switch (tecla) {
+    switch (tecla) {
 	    case ECHAP:
-		    exit(1);
+		    exit(0);
 		    break;
 	    default:
 	    	break;
-	}
+	  }
   }
 };
 

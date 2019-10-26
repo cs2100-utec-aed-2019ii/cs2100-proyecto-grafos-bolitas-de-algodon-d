@@ -113,6 +113,7 @@ public:
       {
         temp2 = temp->next;
         temp->next = temp->next->next;
+        temp2->next = nullptr;
         delete temp2;
         return;
       }

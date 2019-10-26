@@ -38,9 +38,91 @@ struct graph_helper
     nodo_2->links_de_donde.push(nuevolink);//dirigido no dirigido diferencia
     element->links.push(nuevolink); 
   }
+  static void del(graph<dir, T>* value, Vertex<T> *val)
+  {
+    value->nodos.pop(val);
+    val->links.for_each(
+      [value](Link<T> *i)
+      {
+        dellink(value, i);
+      }
+    );
+    val->links_de_donde.for_each(
+      [](Link<T> *i)
+      {
+        delete i;
+      }
+    );
+    val->nodes.for_each(
+      [val](Vertex<T>* i)
+      {
+        i->nodes.pop(val);
+      }
+    );
+    delete val;
+  }
+  static void dellink(graph<dir, T>*value, Link<T> *i)
+  {
+    i->partida->links.pop(i);
+    i->partida->links_de_donde.pop(i);
+    i->llegada->links.pop(i);
+    i->llegada->links_de_donde.pop(i);
+    delete i;
+  }
 };
 
-template <bool dir = false, typename T = unsigned char>
+template<typename T>
+struct graph_helper<true,T> 
+{
+  static void make_link(graph<true, T> *element, Vertex<T> *nodo_1,Vertex<T> *nodo_2)
+  {
+    if(nodo_1 == nodo_2) {
+      cout<<"no se pueden hacer ciclos, arista eliminado de "<<nodo_1->data<<" a "<<nodo_1->data<<endl;
+      return;
+    }
+    auto x_1 = nodo_1->x;
+    auto x_2 = nodo_2->x;
+    auto y_1 = nodo_1->y;
+    auto y_2 = nodo_2->y;
+    float peso = element->calc_distan(x_1,x_2,y_1,y_2);
+    Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
+    nodo_1->links.push(nuevolink);
+    element->links.push(nuevolink); 
+  }
+  static void del(graph<true, T>* value, Vertex<T> *val)
+  {
+    value->nodos.pop(val);
+    val->links.for_each(
+      [value](Link<T> *i)
+      {
+        dellink(value, i);
+      }
+    );
+    val->links_de_donde.for_each(
+      [](Link<T> *i)
+      {
+        delete i;
+      }
+    );
+    val->nodes.for_each(
+      [val](Vertex<T>* i)
+      {
+        i->nodes.pop(val);
+      }
+    );
+    delete val;
+  }
+  static void dellink(graph<true, T>*value, Link<T> *i)
+  {
+    i->partida->links.pop(i);
+    i->partida->links_de_donde.pop(i);
+    i->llegada->links.pop(i);
+    i->llegada->links_de_donde.pop(i);
+    delete i;
+  }
+};
+
+template <bool dir = false, typename T = unsigned int>
 class graph
 {
 public: //private
@@ -103,7 +185,7 @@ public:
 
   void rm_Vertex(T dato){
     Vertex<T>* temp = BFS(dato);
-    nodos.pop(temp);
+    graph_helper<dir, T>::del(this, temp);
   }
 
   bool is_connect (){
@@ -131,7 +213,7 @@ public:
   }
 
   bool is_bipartited(){
-
+    
   }
   float calc_density(){
       return ((float) 2*links.length()) / (float)((nodos.length() *(nodos.length()-1))) ;
@@ -152,7 +234,6 @@ public:
                    a_disponi.push(aux->links.at(i));
                 }
              }
-////Vertice con el que llega de menor distancia
             for (int i = 0; i < a_disponi.length(); i++)
             {
               cout<<a_disponi.at(i)->peso<<endl;
