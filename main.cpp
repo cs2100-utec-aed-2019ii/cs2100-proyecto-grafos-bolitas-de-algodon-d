@@ -1,11 +1,10 @@
 #include <iostream>
-#include "./Screen.hpp"
-#include "./Graph.hpp"
+#include "./Glufunc.hpp"
 using namespace std;
 
 int main(int argc, char **argv)
 {
-  Screen<char> *value = new Screen<char>(argc, argv, 640, 480);
+  value = new Screen<char>(argc, argv, 640, 480, drawHandler, mouseHandler);
   value->Start();
   delete value;
   List<int> a;
