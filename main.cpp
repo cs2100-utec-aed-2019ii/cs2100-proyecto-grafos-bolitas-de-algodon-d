@@ -3,41 +3,28 @@
 #include "./Graph.hpp"
 using namespace std;
 
-int main()
+int main(int argc, char **argv)
 {
 
-  graph<false,char>* grafo = new graph<false,char>;
-  Vertex<char> * prim= new Vertex<char>('a',0,0); 
-  Vertex<char> * sec= new Vertex<char>('b',0,1);
-  Vertex<char> * ter= new Vertex<char>('c',0,2);
-  Vertex<char> * cua= new Vertex<char>('d',0,3);
-  Vertex<char> * cin= new Vertex<char>('e',0,4);
-  grafo->insert_nodo(prim);
-  grafo->insert_nodo(sec);
-  grafo->insert_nodo(ter);
-  grafo->insert_nodo(cua);
-  grafo->insert_nodo(cin);
-  grafo->make_link(prim,sec);
-  grafo->make_link(prim,cua);
-  grafo->make_link(sec,ter);
-  cout<<grafo->get_neighbort('b').at(0)->data<<endl;
-  cout<<grafo->get_neighbort('a').at(1)->data<<endl;
-  cout<<grafo->BFS('c')->data<<endl;
-  cout<<grafo->DFS('c')->data<<endl;
-  cout<<grafo->is_connect();
+  Screen<char> *value = new Screen<char>(argc, argv, 640, 480);
+  value->Start();
+  delete value;
+  List<int> a;
+  a.push(4);
+  a.push(2);
+  a.push(5);
+  a.push(3);
+  for(int i = 0; i < a.length(); i++)
+  {
+    cout << a.at(i) << endl;
+  }
+  cout << endl;
 
-  delete grafo;
-
-  //graph<false,char>* grafo = new graph<false,char>;
-  //bool isdirected;
-  //string filename;
-  //Parser<char> parser(isdirected, &filename);
-  //parser.import(grafo);
-  //parser.save(grafo);
-  //delete grafo;
-  //grafo = nullptr;
-  //grafo = (graph<false, char>*)parser.load();
-  //delete grafo;
+  a.for_each(
+    [](int i){
+      cout << i << endl;
+    }
+  );
 
   return 0;
 }
