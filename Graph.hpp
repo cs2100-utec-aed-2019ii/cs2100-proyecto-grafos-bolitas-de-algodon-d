@@ -28,6 +28,11 @@ struct graph_helper
   }
   static void make_link(graph<dir, T> *element, Vertex<T> *nodo_1,Vertex<T> *nodo_2)
   {
+    if(nodo_1 == nodo_2) {
+      cout<<"no se pueden hacer ciclos, arista eliminado de "<<nodo_1->data<<" a "<<nodo_1->data<<endl;
+      
+      return;
+    }
     auto x_1 = nodo_1->x;
     auto x_2 = nodo_2->x;
     auto y_1 = nodo_1->y;
@@ -35,7 +40,7 @@ struct graph_helper
     float peso = element->calc_distan(x_1,x_2,y_1,y_2);
     Link<T>* nuevolink = new Link<T>(nodo_1,nodo_2,peso);
     nodo_1->links.push(nuevolink);
-   // nodo_2->links.push(nuevolink);//dirigido no dirigido diferencia
+    nodo_2->links_de_donde.push(nuevolink);//dirigido no dirigido diferencia
     element->links.push(nuevolink); 
   }
 };
@@ -103,16 +108,8 @@ public:
     delete aux_delete;
   }
 
-  void rm_Vertex(Vertex<T>* nodo){
-    Vertex<T>* temp = nullptr;
-    nodos.for_each(
-      [nodo, temp](Vertex<T> *i){
-        if(i == nodo)
-        {
-          temp = i;
-        }
-      }
-    );
+  void rm_Vertex(T dato){
+    Vertex<T>* temp = BFS(dato);
     nodos.pop(temp);
   }
 
@@ -120,10 +117,10 @@ public:
       Vertex<T>*aux =  nodos.at(0);
       List<Vertex<T>*> cola ;
       List<Vertex<T>*> visitados ;
-      
+      visitados.push(aux);
       while ( visitados.length()< nodos.length())
       {   
-          visitados.push(aux);
+          
           if(aux->links.length()!=0){
           for (int i = 0; i < aux->links.length(); i++)
             {   
@@ -132,6 +129,7 @@ public:
               }
             }
           }    
+          visitados.push(aux);
           aux = cola.pop_front();
           if(cola.length()==0)break;
       }
@@ -143,32 +141,66 @@ public:
 
   }
   float calc_density(){
-      return (2*links->size)/(nodos->size /nodos->size) ;
+      return ((float) 2*links.length()) / (float)((nodos.length() *(nodos.length()-1))) ;
   }
   
-  graph prim(T inicial){
-    Vertex<T>* inicio =  BFS(inicial);// Buscamos? o de frente hacemos el algoritmo?
-    Vertex<T>* aux=inicio;
-    List<Link<T>*> estruc;
-    graph nuevo = new graph;
-    //Encontrar minimo arista
-    nuevo.insert_nodo(aux);
-    float menorp = aux->links.at(0)->peso;
-    aux->links.for_each( 
-      [menorp](Link<T> *i){
-        if(i->peso<=menorp)menorp = i->peso;
-      }
-    );
-    int j = 0; 
-    aux->links.for_each( 
-      [menorp,&j](Link<T> *i){
-        if(i->peso==menorp&& j>0){j++;nuevo.insert_nodo(i->llegada);
-          nuevo.make_link();
-         } 
-      }
-    );
+  graph<false,T> prim(T inicial){
+    Vertex<T>* aux =  BFS(inicial);
+    List<Link<T>*> a_disponi;
+    graph nuevo;
+    
+    if(is_connect()){
+        while(nuevo.nodos.length()<nodos.length()){
+          
+           if(nuevo.nodos.index(aux)==-1){ 
+             for (int i = 0; i<aux->links.length() ; i++)
+             {
+                if(nuevo.links.index(aux->links.at(i))==-1) {
+                   a_disponi.push(aux->links.at(i));
+                }
+             }
+////Vertice con el que llega de menor distancia
+            for (int i = 0; i < a_disponi.length(); i++)
+            {
+              cout<<a_disponi.at(i)->peso<<endl;
+            }
+           Vertex<T>* lle_min = nullptr;
+           for (int i = 0; i < a_disponi.length(); i++)
+           {  
+                Link<T>*llelinkmin = min(a_disponi);
+              if(nuevo.nodos.index(llelinkmin->llegada)==-1) {
+                 lle_min= llelinkmin->llegada;
+                 break;
+                } 
+           }    
+             
+///--------------
+        //asignacion
+
+            nuevo.insert_nodo(aux);
+            nuevo.insert_nodo(lle_min);
+
+            
+            nuevo.make_link(aux,lle_min);
+            aux = lle_min;
+           }
+        } return nuevo;
+    }
+    //else return nullptr;
   }
 
+
+  Link<T>* min(List<Link<T>*> & lista){
+    
+    Link<T>* menorp = lista.at(0);
+    for (int i = 0; i < lista.length(); i++)
+    {
+      if(menorp->peso > lista.at(i)->peso ) menorp = lista.at(i); 
+    }
+    Link<T>* res = menorp;
+    lista.pop(menorp); 
+    return res;
+  }
 
   graph kruskal(){ 
 
@@ -203,8 +235,6 @@ public:
       
       return nullptr;
   }
-
-  
 
 
   Vertex<T> * DFS(T buscadob){
