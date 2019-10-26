@@ -14,9 +14,6 @@ EstadoRaton raton;
 float x,y;
 /////////////////////////////////////
 
-template<typename T>
-void screen1(Screen<T> *val){val->drawHandler();}
-
 template<typename T=char>
 class Screen
 {
@@ -79,8 +76,13 @@ public:
     glutCreateWindow("UwU");
   }
 
-  void draw(){
-
+  void Start()
+  {
+    glutMainLoop();
+  }
+  void drawHandler(void)
+  {
+    graph<false,T> *val = (isdirected)? (graph<false,T> *)values2 : values;
     glPushMatrix();
     glTranslatef(-1.0,-1.0,0.0);
 
@@ -127,8 +129,10 @@ public:
     glPopMatrix();
 
     glFlush();
+    
   } 
-  void mouse(int boton,int state,int mousex,int mousey){
+  void eventHandler(int boton,int state,int mousex,int mousey)
+  {
     if (boton == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
         raton.x = ((mousex)*2)/pantalla_x;
@@ -147,19 +151,6 @@ public:
         
     }
     glutPostRedisplay();  
-  }
-
-  void Start()
-  {
-    glutMainLoop();
-  }
-  void drawHandler(void)
-  {
-    graph<false,T> *val = (isdirected)? (graph<false,T> *)values2 : values;
-    
-  } 
-  void eventHandler(int boton,int state,int mousex,int mousey)
-  {
 
   }
   void save()
