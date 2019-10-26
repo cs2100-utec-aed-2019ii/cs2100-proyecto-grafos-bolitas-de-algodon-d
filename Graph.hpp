@@ -89,6 +89,37 @@ struct graph_helper<true,T>
     nodo_1->links.push(nuevolink);
     element->links.push(nuevolink); 
   }
+  static void del(graph<true, T>* value, Vertex<T> *val)
+  {
+    value->nodos.pop(val);
+    val->links.for_each(
+      [value](Link<T> *i)
+      {
+        dellink(value, i);
+      }
+    );
+    val->links_de_donde.for_each(
+      [](Link<T> *i)
+      {
+        delete i;
+      }
+    );
+    val->nodes.for_each(
+      [val](Vertex<T>* i)
+      {
+        i->nodes.pop(val);
+      }
+    );
+    delete val;
+  }
+  static void dellink(graph<true, T>*value, Link<T> *i)
+  {
+    i->partida->links.pop(i);
+    i->partida->links_de_donde.pop(i);
+    i->llegada->links.pop(i);
+    i->llegada->links_de_donde.pop(i);
+    delete i;
+  }
 };
 
 template <bool dir = false, typename T = unsigned int>
