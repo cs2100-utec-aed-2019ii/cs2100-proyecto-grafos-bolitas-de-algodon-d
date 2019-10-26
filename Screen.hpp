@@ -20,13 +20,13 @@ private:
   float pantalla_y;
   Parser<T> *parser;
 public:
-  Screen(int &argc, char **argv, float x, float y):values(nullptr), values2(nullptr), isdirected(false), pantalla_x(x), pantalla_y(y)
+  Screen(int &argc, char **argv, float x, float y, void(*draw)(void), void(mouse)(int, int, int, int)):values(nullptr), values2(nullptr), isdirected(false), pantalla_x(x), pantalla_y(y)
   {
     parser = new Parser<T>(isdirected, &filename);
     glutInit(&argc, argv);
     IniciarGLUT();
-    glutDisplayFunc();
-    glutMouseFunc();
+    glutDisplayFunc(draw);
+    glutMouseFunc(mouse);
   }
   ~Screen()
   {
