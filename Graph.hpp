@@ -48,16 +48,15 @@ private:
   List<Link<T>*> links;
 public:
   graph (){
-    nodos.for_each(
-      [](Vertex<T>* i){
-        i = nullptr;
-      }
-    );
-    links.for_each(
-      [](Link<T>* i){
-        i = nullptr;
-      }
-    );
+    for (int i = 0; i < nodos.length(); i++)
+    {
+      nodos.at(i)=nullptr;
+    }
+    for (int i = 0; i < links.length(); i++)
+    {
+      links.at(i)=nullptr;
+    }
+    
   }
   graph (graph &grafo){
 
