@@ -92,6 +92,21 @@ public:
       return ((y*2)/pantalla_y)+posicion(120,pantalla_y);    
     }
   }
+
+    //Botones
+  Vertice Insertar[4] = {
+    {{posicion(60,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
+    {{posicion(60,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}},
+    {{posicion(110,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
+    {{posicion(110,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}}
+  };
+  Vertice Eliminar[4] = {
+    {{posicion(160,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(160,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(210,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(210,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
+  };
+
   void IniciarGLUT(){
     glutInitDisplayMode(GLUT_RGB|GLUT_SINGLE);
     glutInitWindowSize(pantalla_x,pantalla_y);
