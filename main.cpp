@@ -24,7 +24,7 @@ int main(int argc, char **argv)
   //cout<<"Esta conectado: "<<grafo.is_connect()<<endl;
   //cout<<grafo.prim('a').BFS('c')->grade()<<endl;
   
- value = new Screen<char>(argc, argv, 640, 480, drawHandler, mouseHandler);
+ value = new Screen<char>(argc, argv, 640, 480, drawHandler, mouseHandler, keyboardHandler);
 
   value->Start();
   delete value;
