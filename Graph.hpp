@@ -40,7 +40,7 @@ struct graph_helper
   }
 };
 
-template <bool dir = false, typename T = bool>
+template <bool dir = false, typename T = unsigned char>
 class graph
 {
 private: 

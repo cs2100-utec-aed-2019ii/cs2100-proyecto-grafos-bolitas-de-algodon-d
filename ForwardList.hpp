@@ -124,8 +124,10 @@ public:
       size--;
       T result = head->value;
       Node<T> *temp = head;
-      head = head->next;
+      head = temp->next;
+      temp->next = nullptr;
       delete temp;
+      temp = nullptr;
       return result;
     }
   }

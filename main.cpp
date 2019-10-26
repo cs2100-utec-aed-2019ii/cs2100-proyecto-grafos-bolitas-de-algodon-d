@@ -15,5 +15,23 @@ int main()
   //grafo = nullptr;
   //grafo = (graph<false, char>*)parser.load();
   //delete grafo;
+  List<int> a;
+  a.push(3);
+  a.push(2);
+  a.push(5);
+  a.push(9);
+  a.push(8);
+  a.push(9);
+  a.for_each([](int i){
+      cout << i << " ";
+    }
+  );
+  cout << endl;
+  a.pop_front();
+  a.for_each([](int i){
+      cout << i << " ";
+    }
+  );
+  cout << endl;
   return 0;
 }
