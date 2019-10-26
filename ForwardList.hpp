@@ -1,6 +1,7 @@
 #ifndef LIST_H
 #define LIST_H
 #include "./FNode.hpp"
+#include <functional>
 
 //template<typename T>
 //void swap(T &a, T &b)
@@ -131,7 +132,7 @@ public:
       return result;
     }
   }
-  void for_each(void (*exec)(T))
+  void for_each(std::function<void(T)> exec)
   {
     if(!head){return;}
     Node<T> *temp = head;
