@@ -24,6 +24,10 @@ struct graph_helper
   static void insert(graph<dir, T> *element, float x, float y, T dato = Defaults<T>::value)
   {
     Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
+    if(!(element->max_x)){element->max_x = nuevo;}
+    else {if(element->max_x->x < x){element->max_x = nuevo;}}
+    if(!(element->max_y)){element->max_y = nuevo;}
+    else {if(element->max_y->y < y){element->max_y = nuevo;}}
     element->nodos.push(nuevo);
   }
   static void make_link(graph<dir, T> *element, Vertex<T> *nodo_1,Vertex<T> *nodo_2)
@@ -46,9 +50,11 @@ class graph
 private: 
   List<Vertex<T>*> nodos;
   List<Link<T>*> links;
+  Vertex<T> *max_x;
+  Vertex<T> *max_y;
 public:
-  graph (){}
-  graph (graph &grafo){
+  graph (): max_x(nullptr), max_y(nullptr){}
+  graph (graph &grafo): max_x(nullptr), max_y(nullptr){
 
   }
   
@@ -65,7 +71,7 @@ public:
     );
   }
 
-  void insert_nodo(float x,float y,T dato = Defaults<T>::value){
+  void insert_nodo(float x,float y,T dato = Defaults<T>::get_value()){
     graph_helper<dir,T>::insert(this, x, y, dato);
   }
 
