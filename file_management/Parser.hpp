@@ -36,7 +36,6 @@ private:
     for(int i = 0; i < numnode; i++)
     {
       *file >> x >> y >> z;
-    cout << "AWOO" << endl;
       element->insert_nodo(x, y);
     }
     getline(*file, temp);

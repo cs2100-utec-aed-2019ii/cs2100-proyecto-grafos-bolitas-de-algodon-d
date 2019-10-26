@@ -1,5 +1,7 @@
 #include <GLUT/glut.h>
 #include <iostream>
+#define ECHAP 27
+
 //probar aparte
 //usar para OSX: g++ grafin.cpp -o gl -framework OpenGL -framework GLUT
 float pantalla_x = 640.0;
@@ -403,6 +405,16 @@ void Control_Raton(int boton,int state,int mousex,int mousey){
     }
     glutPostRedisplay();
 }
+void teclado(unsigned char tecla,int x,int y){
+    switch (tecla) {
+	    case ECHAP:
+		    exit(1);
+		    break;   
+
+	    default:
+	    	break;
+	}
+}
 
 int main(int argc,char** argv){
     glutInit(&argc,argv);
@@ -412,7 +424,7 @@ int main(int argc,char** argv){
     glutDisplayFunc(Pintar);
     //glutIdleFunc(Pintar);
     glutMouseFunc(Control_Raton);
-    
+    glutKeyboardFunc(teclado);
     glutMainLoop();
     return EXIT_SUCCESS;
 }
