@@ -7,11 +7,18 @@
 
 /////////////////////////////////////
 typedef struct{
+    GLfloat verticeXYZ[3];
+    GLfloat colorRGB[3];
+}Vertice;
+
+typedef struct{
     float x,y;
     int izq,der;
 }EstadoRaton;
 EstadoRaton raton;
 float x,y;
+
+
 /////////////////////////////////////
 
 template<typename T=char>
@@ -43,6 +50,20 @@ public:
     delete parser;
   }
 ////////
+
+  //Botones
+  Vertice Insertar[4] = {
+    {{posicion(60,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
+    {{posicion(60,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}},
+    {{posicion(110,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
+    {{posicion(110,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}}
+  };
+  Vertice Eliminar[4] = {
+    {{posicion(160,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(160,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(210,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(210,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
+  };
   float posicion(float x,int pantalla){
     return ((x*2)/pantalla);
   }
@@ -88,18 +109,31 @@ public:
     glPushMatrix();
     glTranslatef(-1.0,-1.0,0.0);
 
+     glBegin(GL_QUADS);
+        for (int i=0; i<4; i++) {
+         glColor3fv(Insertar[i].colorRGB);
+         glVertex3fv(Insertar[i].verticeXYZ);
+        }
+    glEnd();
+
+    glBegin(GL_QUADS);
+        for (int i=0; i<4; i++) {
+         glColor3fv(Eliminar[i].colorRGB);
+         glVertex3fv(Eliminar[i].verticeXYZ);
+        }
+    glEnd();
+
+    glBegin(GL_LINES);
+    glColor3f(231.0/100,76.0/100,60.0/100);
+    glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y));
+    glVertex2f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y));
+    glEnd();
+
     glPointSize(10);
     glBegin(GL_POINTS); 
     glColor3f(44.0/100,44.0/100,84.0/100);
     glVertex3f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y),0);
     glVertex3f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y),0);
-    glEnd();
-    
-    glBegin(GL_LINES);
-    glColor3f(231.0/100,76.0/100,60.0/100);
-    glColor3f(231.0/100,76.0/100,60.0/100);
-    glVertex2f(recalculo_x1(180,pantalla_x),recalculo_y1(90,pantalla_y));
-    glVertex2f(recalculo_x1(120,pantalla_x),recalculo_y1(180,pantalla_y));
     glEnd();
     //Eliminar matriz...
     glPopMatrix();
@@ -121,6 +155,17 @@ public:
         y = raton.y;
         std::cout<<pantalla_y-mousey<< " ";
         std::cout<<raton.y<<std::endl;
+
+        if(posicion(60,pantalla_x) <= raton.x && raton.x <= posicion(110,pantalla_x)){
+            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+               save();
+            }
+        }
+        if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
+            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+               read();
+            }
+        }  
     }else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
        glClear(GL_COLOR_BUFFER_BIT);
@@ -145,11 +190,11 @@ public:
     void *temp = parser->load();
     if(isdirected)
     {
-      values2 = temp;
+      values2 = (graph<true,T> *)temp;
     }
     else
     {
-      values = temp;
+      values = (graph<false,T> *)temp;
     }
   }
 };
