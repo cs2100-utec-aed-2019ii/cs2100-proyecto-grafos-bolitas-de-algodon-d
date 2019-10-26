@@ -54,7 +54,7 @@ public:
     float result = 0;
     if(val)
     {
-      float max_x = val->max_x->x;
+      float max_x = val->max_x;
       result = x*(1.705/max_x);
       result += 0.17;
     }
@@ -66,7 +66,7 @@ public:
     float result = 0;
     if(val)
     {
-      float max_y = val->max_y->y;
+      float max_y = val->max_y;
       result = y*(1.416/max_y);
       result += 0.5;
     }

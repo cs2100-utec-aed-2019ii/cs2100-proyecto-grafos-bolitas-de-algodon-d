@@ -46,12 +46,12 @@ class graph
 private: 
   List<Vertex<T>*> nodos;
   List<Link<T>*> links;
-  Vertex<T> *max_x;
-  Vertex<T> *max_y;
+  float max_x;
+  float max_y;
 public:
 
-  graph (): max_x(nullptr), max_y(nullptr){}
-  graph (graph &grafo): max_x(nullptr), max_y(nullptr){
+  graph (): max_x(0), max_y(0){}
+  graph (graph &grafo): max_x(0), max_y(0){
   }
   
   virtual ~graph (){
@@ -69,29 +69,15 @@ public:
 
   void insert_nodo(float x,float y,T dato = Defaults<T>::get_value()){
     Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
-    if(max_x != nullptr){
-      if(max_x->x < x){
-        max_x = nuevo;
-      }
-    }else{
-      max_x = nuevo;
-    }
-    if(!(max_y)){max_y = nuevo;}
-    else {if(max_y->y < y){max_y = nuevo;}}
+    if(max_x < x){max_x = nuevo->x;}
+    if(max_y < y){max_y = nuevo->y;}
     nodos.push(nuevo);
   }
 
   void insert_nodo(T dato,float x = 0,float y = 0){
     Vertex<T>* nuevo = new Vertex<T>(dato,x,y);
-    if(max_x != nullptr){
-      if(max_x->x < x){
-        max_x = nuevo;
-      }
-    }else{
-      max_x = nuevo;
-    }
-    if(!(max_y)){max_y = nuevo;}
-    else {if(max_y->y < y){max_y = nuevo;}}
+    if(max_x < x){max_x = nuevo->x;}
+    if(max_y < y){max_y = nuevo->y;}
     nodos.push(nuevo);
   }
 
