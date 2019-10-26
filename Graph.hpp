@@ -40,6 +40,34 @@ struct graph_helper
   }
   static void del(graph<dir, T>* value, Vertex<T> *val)
   {
+    value->nodos.pop(val);
+    val->links.for_each(
+      [value](Link<T> *i)
+      {
+        dellink(value, i);
+      }
+    );
+    val->links_de_donde.for_each(
+      [](Link<T> *i)
+      {
+        delete i;
+      }
+    );
+    val->nodes.for_each(
+      [val](Vertex<T>* i)
+      {
+        i->nodes.pop(val);
+      }
+    );
+    delete val;
+  }
+  static void dellink(graph<dir, T>*value, Link<T> *i)
+  {
+    i->partida->links.pop(i);
+    i->partida->links_de_donde.pop(i);
+    i->llegada->links.pop(i);
+    i->llegada->links_de_donde.pop(i);
+    delete i;
   }
 };
 
@@ -120,13 +148,13 @@ public:
   }
 
   void rm_link(Vertex<T>*nodo_1,Vertex<T>*nodo_2){
-    //Link<T>* aux_delete = find_link(nodo_1,nodo_2); 
-    //delete aux_delete;
+    Link<T>* aux_delete = find_link(nodo_1,nodo_2); 
+    delete aux_delete;
   }
 
   void rm_Vertex(T dato){
     Vertex<T>* temp = BFS(dato);
-    nodos.pop(temp);
+    graph_helper<dir, T>::del(this, temp);
   }
 
   bool is_connect (){
@@ -154,7 +182,7 @@ public:
   }
 
   bool is_bipartited(){
-
+    
   }
   float calc_density(){
       return ((float) 2*links.length()) / (float)((nodos.length() *(nodos.length()-1))) ;

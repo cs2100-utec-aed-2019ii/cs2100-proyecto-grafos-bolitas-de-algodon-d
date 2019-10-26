@@ -7,13 +7,13 @@
 #include "./Macros.hpp"
 
 typedef struct{
-    GLfloat verticeXYZ[3];
-    GLfloat colorRGB[3];
+  GLfloat verticeXYZ[3];
+  GLfloat colorRGB[3];
 }Vertice;
 
 typedef struct{
-    float x,y;
-    int izq,der;
+  float x,y;
+  int izq,der;
 }EstadoRaton;
 
 template<typename T=int>
@@ -252,6 +252,7 @@ public:
       if(!values){values = new graph<false, T>();}
       parser->save(values);
     }
+    cout << "Grafo Guardado" << endl;
   }
   void read()
   {
@@ -266,6 +267,7 @@ public:
       if(values){delete values;values = nullptr;}
       values = (graph<false,T> *)temp;
     }
+    cout << "Grafo Leido" << endl;
   }
   void import()
   {
@@ -278,13 +280,13 @@ public:
   {
     delete values2;
     delete values;
-     switch (tecla) {
+    switch (tecla) {
 	    case ECHAP:
-		    exit(1);
+		    exit(0);
 		    break;
 	    default:
 	    	break;
-	}
+	  }
   }
 };
 
