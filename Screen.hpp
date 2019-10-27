@@ -188,14 +188,17 @@ public:
               if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x)){
                 if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y)){
                   temp=i;
-                  if(temp)
-                  {
-                    //ELIMINAR NODO uwu
-                     std::cout<<"Esto se deveria borrar xD ";         
-                    temp=nullptr;
-                  }
+                  
                 }
               }
+               if(temp)
+                  {
+                    //ELIMINAR NODO uwu
+                    std::cout<<"eliminar "<<std::endl; 
+
+                    std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;        
+                    temp=nullptr;
+                  }
             }
 
           );
@@ -219,7 +222,33 @@ public:
         }  
     }else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
-       glClear(GL_COLOR_BUFFER_BIT);        
+       glClear(GL_COLOR_BUFFER_BIT);  
+         if(val)
+        {
+          Vertex<T> *temp = nullptr;
+          val->nodos.for_each(
+            [this, temp](Vertex<T> *i) mutable -> void{
+              if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x)){
+                if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y)){
+                  temp=i;
+                  
+                }
+              }
+               if(temp)
+                  {
+                    //ELIMINAR NODO uwu
+                  
+                    std::cout<<"insertar "<<std::endl;         
+
+                    std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;
+                    temp=nullptr;
+                  }
+            }
+
+          );
+          
+        }
+                
     }
     glutPostRedisplay();  
 
