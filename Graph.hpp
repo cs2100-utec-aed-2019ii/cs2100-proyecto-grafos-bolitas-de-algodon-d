@@ -222,44 +222,46 @@ public:
       return ((float) 2*links.length()) / (float)((nodos.length() *(nodos.length()-1))) ;
   }
   
-  graph<false,T> prim(T inicial){
+  graph prim(T inicial){
     Vertex<T>* aux =  BFS(inicial);
     List<Link<T>*> a_disponi;
     graph nuevo;
-    
+
     if(is_connect()){
         while(nuevo.nodos.length()<nodos.length()){
+          for (int i = 0; i < nuevo.nodos.length(); i++)
+          {
+            cout<<nuevo.nodos.at(i)->data<<endl;
+          }
           
            if(nuevo.nodos.index(aux)==-1){ 
+            
+            
              for (int i = 0; i<aux->links.length() ; i++)
              {
                 if(nuevo.links.index(aux->links.at(i))==-1) {
+
                    a_disponi.push(aux->links.at(i));
                 }
              }
-            for (int i = 0; i < a_disponi.length(); i++)
-            {
-              cout<<a_disponi.at(i)->peso<<endl;
-            }
+           //  cout<<aux->data<<endl;
+            
            Vertex<T>* lle_min = nullptr;
            for (int i = 0; i < a_disponi.length(); i++)
            {  
                 Link<T>*llelinkmin = min(a_disponi);
-              if(nuevo.nodos.index(llelinkmin->llegada)==-1) {
-                 lle_min= llelinkmin->llegada;
-                 break;
+                if(nuevo.nodos.index(llelinkmin->llegada)==-1) {
+                  lle_min= llelinkmin->llegada;
+                  break;
                 } 
-           }    
-             
+           }     
 ///--------------
         //asignacion
-
             nuevo.insert_nodo(aux);
-            nuevo.insert_nodo(lle_min);
-
-            
+            nuevo.insert_nodo(lle_min);            
             nuevo.make_link(aux,lle_min);
             aux = lle_min;
+            cout<<aux->data<<endl;
            }
         } return nuevo;
     }

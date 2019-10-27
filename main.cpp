@@ -25,15 +25,16 @@ int main(int argc, char **argv)
   for(int i = 0; i< grafo.get_neighbort(a->data).length();i++){
     cout<<grafo.get_neighbort(a->data).at(i)->data<<" ";
   }
-  cout<<endl<<"Los vertices "<<a->data <<" y "<<b->data <<" son vecinos: "<< grafo.val_neight_threshold(a->data,b->data);
-  //cout<<grafo.prim('a').BFS('c')->grade()<<endl;
+  cout<<endl<<"Los vertices "<<a->data <<" y "<<b->data <<" son vecinos: "<< grafo.val_neight_threshold(a->data,b->data)<<endl;
+
+  cout<<grafo.prim(a->data).BFS(a->data)->grade()<<endl;
   
 
- value = new Screen<char>(argc, argv, 640, 480, drawHandler, mouseHandler, keyboardHandler);
+/* value = new Screen<char>(argc, argv, 640, 480, drawHandler, mouseHandler, keyboardHandler);
 
 
   value->Start();
-  delete value;
+  delete value;*/
   
   /*
   List<int> a;
