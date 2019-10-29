@@ -5,7 +5,7 @@ using namespace std;
 int main(int argc, char **argv)
 { 
   
-  graph<false,char> grafo;
+/*  graph<false,char> grafo;
   grafo.insert_nodo((float)1.5, 4.0);
   grafo.insert_nodo((float)2.5, 4.0);
   grafo.insert_nodo((float)3.5, 4.0);
@@ -27,14 +27,14 @@ int main(int argc, char **argv)
   }
   cout<<endl<<"Los vertices "<<a->data <<" y "<<b->data <<" son vecinos: "<< grafo.val_neight_threshold(a->data,b->data)<<endl;
 
-  cout<<grafo.prim(a->data).BFS(a->data)->grade()<<endl;
+  cout<<grafo.prim(a->data).BFS(a->data)->grade()<<endl;*/
   
 
-/* value = new Screen<char>(argc, argv, 640, 480, drawHandler, mouseHandler, keyboardHandler);
+value = new Screen<char>(argc, argv, 640, 480, drawHandler, mouseHandler, keyboardHandler);
 
 
   value->Start();
-  delete value;*/
+  delete value;
   
   /*
   List<int> a;
