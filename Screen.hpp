@@ -5,7 +5,6 @@
 #include "./Graph.hpp"
 #include "./file_management/Parser.hpp"
 #include "./Macros.hpp"
-
 int llave1,llave2;
 
 typedef struct{
