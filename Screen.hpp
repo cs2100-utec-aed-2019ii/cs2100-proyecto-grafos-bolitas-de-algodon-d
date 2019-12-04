@@ -5,7 +5,10 @@
 #include "./Graph.hpp"
 #include "./file_management/Parser.hpp"
 #include "./Macros.hpp"
+
 int llave1,llave2;
+
+int puerta1;
 
 typedef struct{
   GLfloat verticeXYZ[3];
@@ -189,6 +192,14 @@ public:
         llave2 = 0;
         glEnd();
       }
+
+      glPointSize(5);
+      glBegin(GL_POINTS);
+        //Vertex<T> *i;
+        glColor3f(255/255.0,215/255.0,0/255.0);
+        glVertex3f(valx(227), valy(340), 0);
+      
+      glEnd();
     }
     std::string text1;
     text1 ="Save";
@@ -357,7 +368,7 @@ public:
     parser->import(values);
     cout << "VTK Cargado" << endl;
   }
-  void closeall(unsigned char tecla,int x,int y)
+  void teclado(unsigned char tecla,int x,int y)
   {
     delete values2;
     delete values;
@@ -365,8 +376,16 @@ public:
 	    case ECHAP:
 		    exit(0);
 		    break;
+      case 'a':
+        
+        break;
+      case 'd':
+
+        break;
 	    default:
 	    	break;
+
+
 	  }
   }
 };
