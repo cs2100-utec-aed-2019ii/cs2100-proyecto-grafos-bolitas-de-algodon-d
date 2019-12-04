@@ -169,89 +169,87 @@ public:
     graph<false,T> *val = (isdirected)? (graph<false,T> *)values2 : values;
     if (boton == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
-        raton.x = ((mousex)*2)/pantalla_x;
-        //x = raton.x;
-        //std::cout<<mousex<< " ";
-        //std::cout<<raton.x<<std::endl;
-        //std::cout<<"______"<<std::endl;
-        
-        raton.y = ((pantalla_y-mousey)*2)/pantalla_y;
-        y = raton.y;
-        //std::cout<<pantalla_y-mousey<< " ";
-        //std::cout<<raton.y<<std::endl;
+      raton.x = ((mousex)*2)/pantalla_x;
+      //x = raton.x;
+      //std::cout<<mousex<< " ";
+      //std::cout<<raton.x<<std::endl;
+      //std::cout<<"______"<<std::endl;
+      
+      raton.y = ((pantalla_y-mousey)*2)/pantalla_y;
+      y = raton.y;
+      //std::cout<<pantalla_y-mousey<< " ";
+      //std::cout<<raton.y<<std::endl;
 
-        if(val)
-        {
-          Vertex<T> *temp = nullptr;
-          val->nodos.for_each(
-            [this, temp](Vertex<T> *i) mutable -> void{
-              if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x)){
-                if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y)){
-                  temp=i;
-                  
-                }
-              }
-               if(temp)
-                  {
-                    //ELIMINAR NODO uwu
-                    std::cout<<"eliminar "<<std::endl; 
-
-                    std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;        
-                    temp=nullptr;
-                  }
-            }
-
-          );
-          
-        }
-
-        if(posicion(60,pantalla_x) <= raton.x && raton.x <= posicion(110,pantalla_x)){
-            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-               save();
-            }
-        }
-        if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
-            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-               read();
-            }
-        }
-        if(posicion(260,pantalla_x) <= raton.x && raton.x <= posicion(310,pantalla_x)){
-            if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-               import();
-            }
-        }  
-    }else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-    {
-       glClear(GL_COLOR_BUFFER_BIT);  
-         if(val)
-        {
-          Vertex<T> *temp = nullptr;
-          val->nodos.for_each(
-            [this, temp](Vertex<T> *i) mutable -> void{
-              if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x)){
-                if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y)){
-                  temp=i;
-                  
-                }
-              }
-               if(temp)
-                  {
-                    //ELIMINAR NODO uwu
-                  
-                    std::cout<<"insertar "<<std::endl;         
-
-                    std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;
-                    temp=nullptr;
-                  }
-            }
-
-          );
-          
-        }
+      if(val)
+      {
+        Vertex<T> *temp = nullptr;
+        val->nodos.for_each(
+          [this, temp](Vertex<T> *i) mutable -> void{
+            if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x))
+            {
+              if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y))
+              {
+                temp=i;
                 
+              }
+            }
+            if(temp)
+            {
+              //ELIMINAR NODO uwu
+              std::cout<<"eliminar "<<std::endl; 
+
+              std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;        
+              temp=nullptr;
+            }
+          }
+        );
+      }
+
+      if(posicion(60,pantalla_x) <= raton.x && raton.x <= posicion(110,pantalla_x)){
+        if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+          save();
+        }
+      }
+      if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
+        if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+          read();
+        }
+      }
+      if(posicion(260,pantalla_x) <= raton.x && raton.x <= posicion(310,pantalla_x)){
+        if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
+          import();
+        }
+      }  
+    }
+    else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+    {
+      glClear(GL_COLOR_BUFFER_BIT);  
+      if(val)
+      {
+        Vertex<T> *temp = nullptr;
+        val->nodos.for_each(
+          [this, temp](Vertex<T> *i) mutable -> void{
+            if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x))
+            {
+              if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y))
+              {
+                temp=i;
+              }
+            }
+            if(temp)
+            {
+              //ELIMINAR NODO uwu
+            
+              std::cout<<"insertar "<<std::endl;         
+
+              std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;
+              temp=nullptr;
+            }
+          }
+        );
+      }
     }
     glutPostRedisplay();  
-
   }
   void save()
   {
