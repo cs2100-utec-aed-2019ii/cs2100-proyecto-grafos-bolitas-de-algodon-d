@@ -82,28 +82,29 @@ public:
     //Botones
   Vertice Insertar[4] = {
     {{posicion(60,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
-    {{posicion(60,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}},
     {{posicion(110,pantalla_x),posicion(75,pantalla_y),0},{0,1,0}},
-    {{posicion(110,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}}
+    {{posicion(110,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}},
+    {{posicion(60,pantalla_x),posicion(25,pantalla_y),0},{0,1,0}}    
   };
   Vertice Eliminar[4] = {
     {{posicion(160,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
-    {{posicion(160,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
     {{posicion(210,pantalla_x),posicion(75,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
-    {{posicion(210,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
+    {{posicion(210,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}},
+    {{posicion(160,pantalla_x),posicion(25,pantalla_y),0},{211.0/100,84.0/100,0.0/100}}
+    
   };
   Vertice Siguiente[4] = {
     {{posicion(260,pantalla_x),posicion(75,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
-    {{posicion(260,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
     {{posicion(310,pantalla_x),posicion(75,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
-    {{posicion(310,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}}
+    {{posicion(310,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
+    {{posicion(260,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}}
   };
 
   Vertice Movimiento[4] = {
     {{posicion(360,pantalla_x),posicion(75,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
-    {{posicion(360,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
     {{posicion(410,pantalla_x),posicion(75,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
-    {{posicion(410,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}}
+    {{posicion(410,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}},
+    {{posicion(360,pantalla_x),posicion(25,pantalla_y),0},{192.0/250.0,57.0/250.0,43.0/250.0}}
   };
 
   void IniciarGLUT(){
@@ -204,22 +205,22 @@ public:
     std::string text1;
     text1 ="Save";
     glColor3f(0,0,0);
-    drawtext(text1.data(),text1.size(),posicion(60,pantalla_x),posicion(55,pantalla_y));
+    drawtext(text1.data(),text1.size(),posicion(65,pantalla_x),posicion(50,pantalla_y));
 
     std::string text2;
     text2 ="Read";
     glColor3f(0,0,0);
-    drawtext(text2.data(),text2.size(),posicion(160,pantalla_x),posicion(55,pantalla_y));
+    drawtext(text2.data(),text2.size(),posicion(165,pantalla_x),posicion(50,pantalla_y));
 
     std::string text3;
     text3 ="Import";
     glColor3f(0,0,0);
-    drawtext(text3.data(),text3.size(),posicion(260,pantalla_x),posicion(55,pantalla_y));
+    drawtext(text3.data(),text3.size(),posicion(260,pantalla_x),posicion(50,pantalla_y));
 
     std::string text4;
     text4 ="Movi";
     glColor3f(0,0,0);
-    drawtext(text4.data(),text4.size(),posicion(360,pantalla_x),posicion(55,pantalla_y));
+    drawtext(text4.data(),text4.size(),posicion(365,pantalla_x),posicion(50,pantalla_y));
     
     glPopMatrix();
 
@@ -368,7 +369,7 @@ public:
     parser->import(values);
     cout << "VTK Cargado" << endl;
   }
-  void teclado(unsigned char tecla,int x,int y)
+  void closeall(unsigned char tecla,int x,int y)
   {
     delete values2;
     delete values;
@@ -382,7 +383,7 @@ public:
       case 'd':
 
         break;
-        
+
 	    default:
 	    	break;
 
