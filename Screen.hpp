@@ -8,7 +8,7 @@
 
 int llave1,llave2;
 
-int puerta1;
+int puerta1=0,puerta2;
 
 typedef struct{
   GLfloat verticeXYZ[3];
@@ -185,7 +185,8 @@ public:
       glEnd();
 
       if(llave1 == 1 && llave2 == 1)  
-      {     
+      { 
+
         glColor3f(1.0,0.0,0.0);
         glPointSize(10); 
         glBegin(GL_POINTS); 
@@ -193,14 +194,29 @@ public:
         llave2 = 0;
         glEnd();
       }
-
-      glPointSize(5);
-      glBegin(GL_POINTS);
-        //Vertex<T> *i;
-        glColor3f(255/255.0,215/255.0,0/255.0);
-        glVertex3f(valx(227), valy(340), 0);
       
+      if(puerta1 != 0)
+      {  
+        glPointSize(8);
+        glBegin(GL_POINTS);
+
+        if(puerta1==1){
+          glColor3f(231.0/100,76.0/100,60.0/100); 
+          glVertex2f(valx(10), valy(127));  
+        }
+        else if(puerta1==2){
+          glColor3f(231.0/100,76.0/100,60.0/100); 
+          glVertex2f(valx(227), valy(340));
+        }
+        glEnd();
+      }
+      glBegin(GL_LINES);
+      glColor3f(231.0/100,76.0/100,60.0/100);
+      glVertex2f(valx(180),valy(90));
+      glVertex2f(valx(227),valy(340));
+
       glEnd();
+      
     }
     std::string text1;
     text1 ="Save";
@@ -293,7 +309,7 @@ public:
       //nodo final
        if(posicion(360,pantalla_x) <= raton.x && raton.x <= posicion(410,pantalla_x)){
         if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          
+          puerta1=1;
 
         }
       }
@@ -327,7 +343,7 @@ public:
       //nodo final
        if(posicion(360,pantalla_x) <= raton.x && raton.x <= posicion(410,pantalla_x)){
         if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          
+          puerta1=2;
         }
       }
     }
@@ -369,6 +385,9 @@ public:
     parser->import(values);
     cout << "VTK Cargado" << endl;
   }
+
+  //funciones
+
   void closeall(unsigned char tecla,int x,int y)
   {
     delete values2;
@@ -378,10 +397,14 @@ public:
 		    exit(0);
 		    break;
       case 'a':
-        
+        //funcion A*
+
+        glutPostRedisplay();
         break;
       case 'd':
+        //funcion Disjktra
 
+        glutPostRedisplay();
         break;
 
 	    default:
