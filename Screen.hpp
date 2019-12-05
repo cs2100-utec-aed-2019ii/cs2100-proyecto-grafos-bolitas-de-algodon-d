@@ -27,6 +27,8 @@ class Screen
 private:
   graph<false,T> *values;
   graph<true,T> *values2;
+  Vertex<T> *first;
+  Vertex<T> *second;
   Iterator<T> *itr;
   bool isdirected;
   string filename;
@@ -37,7 +39,7 @@ private:
   float x,y;
   future<void> thread;
 public:
-  Screen(int &argc, char **argv, float x, float y, void(*draw)(void), void(mouse)(int, int, int, int), void(keys)(unsigned char,int, int)):values(nullptr), values2(nullptr), isdirected(false), pantalla_x(x), pantalla_y(y), itr(nullptr)
+  Screen(int &argc, char **argv, float x, float y, void(*draw)(void), void(mouse)(int, int, int, int), void(keys)(unsigned char,int, int)):values(nullptr), values2(nullptr), isdirected(false), pantalla_x(x), pantalla_y(y), itr(nullptr), first(nullptr), second(nullptr)
   {
     parser = new Parser<T>(isdirected, &filename);
     glutInit(&argc, argv);
@@ -235,21 +237,13 @@ public:
     if (boton == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
       raton.x = ((mousex)*2)/pantalla_x;
-      //x = raton.x;
-      //std::cout<<mousex<< " ";
-      //std::cout<<raton.x<<std::endl;
-      //std::cout<<"______"<<std::endl;
-      
       raton.y = ((pantalla_y-mousey)*2)/pantalla_y;
       y = raton.y;
-      //std::cout<<pantalla_y-mousey<< " ";
-      //std::cout<<raton.y<<std::endl;
 
       if(posicion(62.7808,pantalla_x) <= raton.x && raton.x <= posicion(600,pantalla_x)){
         if(posicion(125.67336,pantalla_y) <= raton.y && raton.y <= posicion(459.84,pantalla_y)){
           llave2 = 1;
           //aqui va la funcion insert
-
         }
       }
 
@@ -268,10 +262,9 @@ public:
             }
             if(temp)
             {
-              std::cout<<"Posicion del nodo: "<<std::endl; 
-
-              std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;        
-
+              //std::cout<<"Posicion del nodo: "<<std::endl; 
+              //std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;        
+              first = temp;
               if(!itr)
               {
                 itr = new Iterator<T>(temp);
@@ -281,7 +274,7 @@ public:
                 delete itr;
                 itr = new Iterator<T>(temp);
               }
-              
+              cout << "EL primero es: " << first << endl;
               temp=nullptr;
             }
           }
@@ -314,7 +307,6 @@ public:
     }
     else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
-      glClear(GL_COLOR_BUFFER_BIT);  
       if(val)
       {
         Vertex<T> *temp = nullptr;
@@ -325,13 +317,18 @@ public:
               if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y))
               {
                 temp=i;
+                llave2 = 0; 
               }
             }
             if(temp)
             {
-              std::cout<<"Coordenadas del nodo eliminado: "<<std::endl;         
-
-              std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;
+              //std::cout<<"Coordenadas del nodo eliminado: "<<std::endl;         
+              //std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;
+              second = temp;
+              second->r = 255;
+              second->g = 0;
+              second->b = 0;
+              cout << "EL segundo es: " << second << endl;
               temp=nullptr;
             }
           }
