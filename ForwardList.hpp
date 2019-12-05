@@ -3,19 +3,20 @@
 #include "./FNode.hpp"
 #include <functional>
 
-//template<typename T>
-//void swap(T &a, T &b)
-//{
-//  T temp = a;
-//  a = b;
-//  b = temp;
-//}
+template<typename T>
+void swap(T &a, T &b)
+{
+  T temp = a;
+  a = b;
+  b = temp;
+}
 
 template<typename T>
 class List {
 private:
   Node<T> *head;
   unsigned int size;
+  bool isSorted;
   Node<T>* atn(unsigned int position)
   {
     if(!head){throw;}
@@ -28,10 +29,10 @@ private:
     return temp;
   }
 public:
-  List():head(nullptr), size(0){}
+  List():head(nullptr), size(0), isSorted(true){}
   ~List(){delete head; size = 0;}
   unsigned int length(){return size;}
-  unsigned int length()const{return size;}
+  //unsigned int length()const{return size;}
   T& at(unsigned int position)
   {
     if(!head){throw;}
@@ -55,6 +56,7 @@ public:
       }
       temp->next = new Node<T>;
       temp->next->value = value;
+      isSorted = false;
       return;
     }
     head = new Node<T>;
@@ -69,6 +71,7 @@ public:
       temp2->value = value;
       temp2->next = head;
       head = temp2;
+      isSorted = false;
       return;
     }
     head = new Node<T>;
@@ -158,6 +161,7 @@ public:
         atn(j)->value = temp; 
       } 
     }
+    isSorted = true;
   }
   int bsearch(int l, int r, T value)
   {
@@ -175,7 +179,14 @@ public:
   }
   int index(T element)
   {
-    sort();
+    if(!size)
+    {
+      return -1;
+    }
+    if(!isSorted)
+    {
+      sort();
+    }
     return bsearch(0, size-1, element);
   }
   void clear()

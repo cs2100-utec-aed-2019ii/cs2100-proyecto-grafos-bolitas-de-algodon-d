@@ -26,7 +26,7 @@ struct Vertex
     nodes.clear();
   }
 };
-Vertex<float> *vertice;
+
 template<typename T>
 struct Vertex<T*>
 {
