@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 #include <cmath>
+#include <map>
 #include "./ForwardList.hpp"
 #include "./Vertex.hpp"
 #include "./Link.hpp"
@@ -375,6 +376,78 @@ public:
      sumaprom = (sumaprom/links.length());
     if(calc_distan(d_1->x,d_2->x,d_1->y,d_2->y) <= sumaprom) return true;
     else return false;
+  }
+
+  graph<dir,T>* dijkstra(Vertex<T>* inicio,Vertex<T>* final){
+    map <Vertex<T>*,int> e_fin;
+    map <Vertex<T>*,int> e_temp;
+    graph<dir,T>* resultado = new graph<dir,T>();
+    e_fin.insert({inicio,0});
+    auto min = inicio->links.at(0);cout<<min;
+    inicio->links.for_each([&e_temp,&min](Link<T>* i){
+      e_temp.insert({i->llegada,i->peso});
+      min = min->peso<i->peso?min:i;
+    });
+    e_fin.insert({min->llegada,min->peso});
+    
+ 
+    Vertex<T>* actual=min->llegada;
+    while(e_fin.find(final)==e_fin.end()){  
+        min = actual->links.at(0);
+        actual->links.for_each([&e_fin,&e_temp,actual](Link<T>* it){//etiquetadodenodos
+          if(e_fin.find(it->llegada)==e_fin.end()){
+            if(e_temp.find(it->llegada)==e_temp.end()){
+                auto pesonuevo =  e_fin.find(actual)->second+it->peso;
+                e_temp.insert({it->llegada,pesonuevo});
+            }
+            else{
+                auto pesonuevo =  e_fin.find(actual)->second+it->peso;
+                pesonuevo = pesonuevo<e_temp.find(it->llegada)->second?pesonuevo:e_temp.find(it->llegada)->second;
+                e_temp[it->llegada]=pesonuevo;
+            }
+          } 
+        });
+        map<Vertex<T>*,int> disp;
+        for(auto & itr:e_temp){
+          if(e_fin.find(itr.first)==e_fin.end()){
+            disp.insert({itr.first,itr.second});
+          }  
+        }
+        //eleccion del siguiente nodo
+        auto it = disp.begin();
+        auto minode = it->first;
+        auto minval = it->second; 
+        for(auto & itr:e_temp){
+          if(e_fin.find(itr.first)==e_fin.end()){
+            minode= minval<itr.second?minode:itr.first;
+            minval= minval<itr.second?minval:itr.second;
+          }
+        }
+        e_fin.insert({minode,minval});
+        actual=minode;
+        disp.clear();
+    }
+    
+    auto aux = final;
+    while(aux){
+      int num = e_fin[aux];
+   
+      for (int i = 0; i < aux->links_de_donde.length() ; i++)
+      {
+        if(num-aux->links_de_donde.at(i)->peso==e_fin[aux->links_de_donde.at(i)->partida]){
+          resultado->insert_nodo(aux);
+          resultado->insert_nodo(aux->links_de_donde.at(i)->partida);
+          resultado->make_link(aux->links_de_donde.at(i)->partida,aux);
+          aux = aux->links_de_donde.at(i)->partida;break;
+        }
+      }
+      if (aux == inicio)break;
+    }
+    return resultado;
+  }
+
+  graph Aasteris(Vertex<T>* inicio,Vertex<T>* final){
+        
   }
 
   //auxiliares
