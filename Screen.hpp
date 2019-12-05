@@ -1,14 +1,15 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 #define ECHAP 27
-#include<thread>
+#include <future>
+#include "./Iterator.hpp"
 #include "./Graph.hpp"
 #include "./file_management/Parser.hpp"
 #include "./Macros.hpp"
 
 int llave1,llave2;
 
-int puerta1=0,puerta2;
+int puerta1=0;
 
 typedef struct{
   GLfloat verticeXYZ[3];
@@ -26,6 +27,9 @@ class Screen
 private:
   graph<false,T> *values;
   graph<true,T> *values2;
+  Vertex<T> *first;
+  Vertex<T> *second;
+  Iterator<T> *itr;
   bool isdirected;
   string filename;
   float pantalla_x;
@@ -33,8 +37,9 @@ private:
   Parser<T> *parser;
   EstadoRaton raton;
   float x,y;
+  future<void> thread;
 public:
-  Screen(int &argc, char **argv, float x, float y, void(*draw)(void), void(mouse)(int, int, int, int), void(keys)(unsigned char,int, int)):values(nullptr), values2(nullptr), isdirected(false), pantalla_x(x), pantalla_y(y)
+  Screen(int &argc, char **argv, float x, float y, void(*draw)(void), void(mouse)(int, int, int, int), void(keys)(unsigned char,int, int)):values(nullptr), values2(nullptr), isdirected(false), pantalla_x(x), pantalla_y(y), itr(nullptr), first(nullptr), second(nullptr)
   {
     parser = new Parser<T>(isdirected, &filename);
     glutInit(&argc, argv);
@@ -194,29 +199,21 @@ public:
         llave2 = 0;
         glEnd();
       }
-      
       if(puerta1 != 0)
       {  
         glPointSize(8);
         glBegin(GL_POINTS);
 
         if(puerta1==1){
-          glColor3f(231.0/100,76.0/100,60.0/100); 
+          glColor3f(128.0/255,0.0/255,128.0/255); 
           glVertex2f(valx(10), valy(127));  
         }
         else if(puerta1==2){
-          glColor3f(231.0/100,76.0/100,60.0/100); 
+          glColor3f(128.0/255,0.0/255,128.0/255); 
           glVertex2f(valx(227), valy(340));
         }
         glEnd();
       }
-      glBegin(GL_LINES);
-      glColor3f(231.0/100,76.0/100,60.0/100);
-      glVertex2f(valx(180),valy(90));
-      glVertex2f(valx(227),valy(340));
-
-      glEnd();
-      
     }
     std::string text1;
     text1 ="Save";
@@ -248,21 +245,13 @@ public:
     if (boton == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
       raton.x = ((mousex)*2)/pantalla_x;
-      //x = raton.x;
-      //std::cout<<mousex<< " ";
-      //std::cout<<raton.x<<std::endl;
-      //std::cout<<"______"<<std::endl;
-      
       raton.y = ((pantalla_y-mousey)*2)/pantalla_y;
       y = raton.y;
-      //std::cout<<pantalla_y-mousey<< " ";
-      //std::cout<<raton.y<<std::endl;
 
       if(posicion(62.7808,pantalla_x) <= raton.x && raton.x <= posicion(600,pantalla_x)){
         if(posicion(125.67336,pantalla_y) <= raton.y && raton.y <= posicion(459.84,pantalla_y)){
-          llave2 = 1;
+          llave2 = 0;
           //aqui va la funcion insert
-
         }
       }
 
@@ -281,9 +270,19 @@ public:
             }
             if(temp)
             {
-              std::cout<<"Posicion del nodo: "<<std::endl; 
-
-              std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;        
+              //std::cout<<"Posicion del nodo: "<<std::endl; 
+              //std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;        
+              first = temp;
+              if(!itr)
+              {
+                itr = new Iterator<T>(temp);
+              }
+              else
+              {
+                delete itr;
+                itr = new Iterator<T>(temp);
+              }
+              cout << "EL primero es: " << first << endl;
               temp=nullptr;
             }
           }
@@ -292,17 +291,17 @@ public:
 
       if(posicion(60,pantalla_x) <= raton.x && raton.x <= posicion(110,pantalla_x)){
         if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          save();
+          thread = async(launch::async, save, this);
         }
       }
       if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
         if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          read();
+          read(this);
         }
       }
       if(posicion(260,pantalla_x) <= raton.x && raton.x <= posicion(310,pantalla_x)){
         if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          import();
+          import(this);
           llave1 = 1;
         }
       }  
@@ -316,26 +315,29 @@ public:
     }
     else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
-      glClear(GL_COLOR_BUFFER_BIT);  
       if(val)
       {
-        Vertex<T> *temp = nullptr;
+        Vertex<T> *temp2 = nullptr;
         val->nodos.for_each(
-          [this, temp](Vertex<T> *i) mutable -> void{
+          [this, temp2](Vertex<T> *i) mutable -> void{
             if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x))
             {
               if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y))
               {
-                temp=i;
+                temp2=i;
+                llave2 = 0; 
               }
             }
-            if(temp)
+            if(temp2)
             {
-            
-              std::cout<<"Coordenadas del nodo eliminado: "<<std::endl;         
-
-              std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;
-              temp=nullptr;
+              //std::cout<<"Coordenadas del nodo eliminado: "<<std::endl;         
+              //std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;
+              second = temp2;
+              second->r = 255;
+              second->g = 0;
+              second->b = 0;
+              cout << "EL segundo es: " << second << endl;
+              temp2=nullptr;
             }
           }
         );
@@ -349,68 +351,73 @@ public:
     }
     glutPostRedisplay();  
   }
-  void save()
+  static void save(Screen<T> *val)
   {
-    if(isdirected)
+    if(val->isdirected)
     {
-      if(!values2){values2 = new graph<true, T>();}
-      parser->save(values2);
+      if(!val->values2){val->values2 = new graph<true, T>();}
+      val->parser->save(val->values2);
     }
     else
     {
-      if(!values){values = new graph<false, T>();}
-      parser->save(values);
+      if(!val->values){val->values = new graph<false, T>();}
+      val->parser->save(val->values);
     }
     cout << "Grafo Guardado" << endl;
   }
-  void read()
+  static void read(Screen<T> *val)
   {
-    void *temp = parser->load();
-    if(isdirected)
+    void *temp = val->parser->load();
+    if(val->isdirected)
     {
-      if(values2){delete values2;values2 = nullptr;}
-      values2 = (graph<true,T> *)temp;
+      if(val->values2){delete val->values2;val->values2 = nullptr;}
+      val->values2 = (graph<true,T> *)temp;
     }
     else
     {
-      if(values){delete values;values = nullptr;}
-      values = (graph<false,T> *)temp;
+      if(val->values){delete val->values;val->values = nullptr;}
+      val->values = (graph<false,T> *)temp;
     }
     cout << "Grafo Leido" << endl;
+    val->drawHandler();
   }
-  void import()
+  static void import(Screen<T> *val)
   {
-    isdirected = false;
-    if(!values){values = new graph<false, T>();}
-    parser->import(values);
+    val->isdirected = false;
+    if(!val->values){val->values = new graph<false, T>();}
+    val->parser->import(val->values);
     cout << "VTK Cargado" << endl;
+    val->drawHandler();
   }
 
   //funciones
 
   void closeall(unsigned char tecla,int x,int y)
   {
-    delete values2;
-    delete values;
     switch (tecla) {
 	    case ECHAP:
+        delete values2;
+        delete values;
 		    exit(0);
 		    break;
       case 'a':
-        //funcion A*
-
+        ++(*itr);
         glutPostRedisplay();
         break;
       case 'd':
-        //funcion Disjktra
+        --(*itr);
+        glutPostRedisplay();
+        break;
+      case 'q':
 
         glutPostRedisplay();
         break;
+      case 'e':
 
+        glutPostRedisplay();
+        break;  
 	    default:
 	    	break;
-
-
 	  }
   }
 };
