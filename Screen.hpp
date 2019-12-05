@@ -223,7 +223,7 @@ public:
     drawtext(text3.data(),text3.size(),posicion(260,pantalla_x),posicion(50,pantalla_y));
 
     std::string text4;
-    text4 ="Movi";
+    text4 ="Dijkstra";
     glColor3f(0,0,0);
     drawtext(text4.data(),text4.size(),posicion(365,pantalla_x),posicion(50,pantalla_y));
     

@@ -362,6 +362,7 @@ public:
   }
 
   static graph<dir,T>* dijkstra(Vertex<T>* inicio,Vertex<T>* fina){
+    //cout << inicio << "\t" << fina << endl;
     map <Vertex<T>*,float> e_fin;
     map <Vertex<T>*,float> e_temp;
     graph<dir,T>* resultado = new graph<dir,T>();
