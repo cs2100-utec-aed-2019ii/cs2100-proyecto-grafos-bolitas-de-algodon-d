@@ -223,7 +223,7 @@ public:
     drawtext(text3.data(),text3.size(),posicion(260,pantalla_x),posicion(50,pantalla_y));
 
     std::string text4;
-    text4 ="Movi";
+    text4 ="Dijkstra";
     glColor3f(0,0,0);
     drawtext(text4.data(),text4.size(),posicion(365,pantalla_x),posicion(50,pantalla_y));
     
@@ -274,7 +274,7 @@ public:
                 delete itr;
                 itr = new Iterator<T>(temp);
               }
-              cout << "EL primero es: " << first << endl;
+              //cout << "EL primero es: " << first << endl;
               temp=nullptr;
             }
           }
@@ -288,58 +288,55 @@ public:
       }
       if(posicion(160,pantalla_x) <= raton.x && raton.x <= posicion(210,pantalla_x)){
         if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          read(this);
+          thread = async(launch::async, read, this);
         }
       }
       if(posicion(260,pantalla_x) <= raton.x && raton.x <= posicion(310,pantalla_x)){
         if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          import(this);
+          thread = async(launch::async, import, this);
           llave1 = 1;
         }
       }  
       //nodo final
        if(posicion(360,pantalla_x) <= raton.x && raton.x <= posicion(410,pantalla_x)){
         if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          
-
+          graph<false, T>::dijkstra(first, second);
         }
       }
     }
     else if(boton == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
+
+      raton.x = ((mousex)*2)/pantalla_x;
+      raton.y = ((pantalla_y-mousey)*2)/pantalla_y;
+      y = raton.y;
+
       if(val)
       {
         Vertex<T> *temp = nullptr;
         val->nodos.for_each(
-          [this, temp](Vertex<T> *i) mutable -> void{
+          [this, &temp](Vertex<T> *i) mutable -> void{
             if((valx(i->x))-posicion(4,pantalla_x) <= raton.x && raton.x <= (valx(i->x))+posicion(4,pantalla_x))
             {
               if((valy(i->y))-posicion(4,pantalla_y) <= raton.y && raton.y <= (valy(i->y))+posicion(4,pantalla_y))
               {
-                temp=i;
                 llave2 = 0; 
+                temp = i;
               }
-            }
-            if(temp)
-            {
-              //std::cout<<"Coordenadas del nodo eliminado: "<<std::endl;         
-              //std::cout<<valx(i->x)<<" "<<valy(i->y)<<std::endl;
-              second = temp;
-              second->r = 255;
-              second->g = 0;
-              second->b = 0;
-              cout << "EL segundo es: " << second << endl;
-              temp=nullptr;
             }
           }
         );
-      }
-      //nodo final
-       if(posicion(360,pantalla_x) <= raton.x && raton.x <= posicion(410,pantalla_x)){
-        if(posicion(25,pantalla_y) <= raton.y && raton.y <= posicion(75,pantalla_y)){
-          
+        if(temp)
+        {
+          second = temp;
+          second->r = 255;
+          second->g = 0;
+          second->b = 0;
+          //cout << "EL segundo es: " << second << endl;
+          temp=nullptr;
         }
       }
+      //nodo final
     }
     glutPostRedisplay();  
   }
@@ -371,7 +368,7 @@ public:
       val->values = (graph<false,T> *)temp;
     }
     cout << "Grafo Leido" << endl;
-    val->drawHandler();
+    glutPostRedisplay();
   }
   static void import(Screen<T> *val)
   {
@@ -379,7 +376,7 @@ public:
     if(!val->values){val->values = new graph<false, T>();}
     val->parser->import(val->values);
     cout << "VTK Cargado" << endl;
-    val->drawHandler();
+    glutPostRedisplay();
   }
   void closeall(unsigned char tecla,int x,int y)
   {
