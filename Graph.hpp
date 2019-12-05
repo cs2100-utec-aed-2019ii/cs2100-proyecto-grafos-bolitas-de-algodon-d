@@ -5,6 +5,7 @@
 #include "./Vertex.hpp"
 #include "./Link.hpp"
 #include "./Macros.hpp"
+#include "./Iterator.hpp"
 
 template<typename T>
 class writer;

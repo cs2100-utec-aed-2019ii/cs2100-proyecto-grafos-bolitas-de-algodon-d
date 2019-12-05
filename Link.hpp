@@ -1,7 +1,6 @@
 #ifndef LINK_H
 #define LINK_H
 #include "./ForwardList.hpp"
-#include "./Vertex.hpp"
 
 template<typename T>
 struct Vertex;
