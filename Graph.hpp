@@ -379,11 +379,11 @@ public:
   }
 
   graph<dir,T>* dijkstra(Vertex<T>* inicio,Vertex<T>* final){
-    map <Vertex<T>*,int> e_fin;
-    map <Vertex<T>*,int> e_temp;
+    map <Vertex<T>*,float> e_fin;
+    map <Vertex<T>*,float> e_temp;
     graph<dir,T>* resultado = new graph<dir,T>();
     e_fin.insert({inicio,0});
-    auto min = inicio->links.at(0);cout<<min;
+    auto min = inicio->links.at(0);
     inicio->links.for_each([&e_temp,&min](Link<T>* i){
       e_temp.insert({i->llegada,i->peso});
       min = min->peso<i->peso?min:i;
@@ -407,7 +407,7 @@ public:
             }
           } 
         });
-        map<Vertex<T>*,int> disp;
+        map<Vertex<T>*,float> disp;
         for(auto & itr:e_temp){
           if(e_fin.find(itr.first)==e_fin.end()){
             disp.insert({itr.first,itr.second});
@@ -427,10 +427,13 @@ public:
         actual=minode;
         disp.clear();
     }
+    for(auto &i:e_fin){
+      cout<<i.first->data<<"->"<<i.second<<endl;
+    }
     
     auto aux = final;
     while(aux){
-      int num = e_fin[aux];
+      float num = e_fin[aux];
    
       for (int i = 0; i < aux->links_de_donde.length() ; i++)
       {
